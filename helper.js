@@ -21,7 +21,7 @@ export const getStartEndTime = (startTime, endTime) => {
     return `${startTime.time || '00:00:00'}/${endTime.time || '00:00:00'}`;
 };
 
-export const generateHTML = (props)=>{
+export const generateHTML_Old = (props)=>{
     
     const {pcsList, lengthType, pieces,  
         name, tare,  yard, m3,
@@ -97,4 +97,73 @@ export const generateHTML = (props)=>{
     </table>
     </body>
     </html>`;
+};
+
+export const generateHTML = (props)=>{
+    
+  const {pcsList, lengthType, pieces,  
+      name, tare,  yard, m3,
+      openTime, startTime } = props;
+  let temp = ''
+  for(let i=0; i<pcsList.length; i+=1) {
+      temp = `${temp}
+      <tr>
+          <th bgcolor='#a5f49c'>${i+12}</th>
+          <td>${pcsList[i]}</td>
+          <td>${coefficientDisplayList[lengthType][i]}</td>
+      </tr>`
+  };
+      
+  return `<html><head>
+  <style>
+  table {
+  font-family: "Times New Roman", Times, serif;
+  border-collapse: collapse;
+  width: 100%;
+  }
+  td, th {
+  border: 1px solid black;
+  text-align: center;
+  padding: 8px;
+  }
+  td.bold {
+  font-weight: bold
+  }
+  </style>
+  </head>
+  <body>
+  <table>
+  <tr>
+    <td colspan="3">${name}</td>
+  </tr>
+  <tr>
+    <td colspan="3">${lengthTypeList[lengthType]}</td>
+  </tr>
+  <tr>
+    <th>${LANGUAGE.DATE}</th>
+    <td colspan="2">${openTime.date}</td>
+  </tr>
+  <tr>
+    <th>${LANGUAGE.START_END_TIME}</th>
+    <td colspan="2">${getStartEndTime(startTime, getCurrentTime())}</td>
+  </tr>
+  <tr bgcolor="#fcea99">
+    <th>${LANGUAGE.TOTAL_PIECES}</th>
+    <td>${pieces}</td>
+    <td>${yard}</td>
+  </tr>
+  <tr bgcolor="#fcea99">
+    <th>${LANGUAGE.TOTAL_M3}</td>
+    <td>${m3}</td>
+    <td>${tare}</td>
+  </tr>
+  <tr bgcolor='#a5f49c'>
+    <th>${LANGUAGE.DIAMETER}</th>
+    <td class="bold">${LANGUAGE.PCS}</td>
+    <td class="bold">${LANGUAGE.COEFFICIENT}</td>
+  </tr>
+  ${temp}
+  </table>
+  </body>
+  </html>`;
 };

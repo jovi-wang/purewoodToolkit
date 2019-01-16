@@ -5,7 +5,7 @@ import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import { COMMON, CONTAINER, LANGUAGE } from './constant';
 import { getCurrentTime, generateHTML } from './helper';
 
-const fileDestinationDirectory = RNFS.ExternalStorageDirectoryPath + '/Download';
+const DownloadFolder = RNFS.ExternalStorageDirectoryPath + '/Download';
 
 // Container action functions
 export const changeTextInputValue = (inputName, value) => {
@@ -77,36 +77,37 @@ export const resetAll = () => {
 }
 // Async actions
 export const resetExport = (props) => {
-  const { name } = props;
-  return (dispatch) => {
-    dispatch(displayLoading());
-    dispatch(setTimeValue(CONTAINER.SET_END_TIME));
-
-    RNFS.readDir(fileDestinationDirectory)
-    .then(async (result) => {
-      try{
-        const fileList = result.filter(file=>file.name.includes(name));
-        const version = fileList.length + 1;
-        const fileName = version>1? `${fileDestinationDirectory}/${name} version${version}.pdf` : `${fileDestinationDirectory}/${name}.pdf`
-        let options = {
-          html: generateHTML(props),
-          fileName: 'temp',
-          base64: true
-        };
-        const temp = await RNHTMLtoPDF.convert(options);
-        await RNFS.writeFile(fileName, temp.base64, 'base64');
-                // clear cache file in /data/user/0/com.purewoodtoolkit/cache
-        await RNFS.unlink(temp.filePath);
-        dispatch(resetAll());
-        dispatch(setTimeValue(CONTAINER.SET_OPEN_TIME));
-      } catch (err) {
-        throw err;
+  const { name, openTime } = props;
+  return async (dispatch) => {
+    try{
+      dispatch(displayLoading());
+      dispatch(setTimeValue(CONTAINER.SET_END_TIME));
+      const destinationFilePath = `${DownloadFolder}/${openTime.date}`;
+      if (!await RNFS.exists(destinationFilePath)) {
+        await RNFS.mkdir(destinationFilePath);
       }
-    }).catch(err=>{
-        console.log('error in line 106', err);
-        dispatch(clearLoading());
-        dispatch(displayError(LANGUAGE.INTERNAL_ERROR));
-    });
+      const result =  await RNFS.readDir(destinationFilePath);
+      const fileList = result.filter(file=>file.name.includes(name));
+      const version = fileList.length + 1;
+      const fileName = version>1? `${destinationFilePath}/${name} version${version}.pdf` : `${destinationFilePath}/${name}.pdf`
+      let options = {
+        html: generateHTML(props),
+        fileName: 'temp',
+        base64: true
+      };
+      const temp = await RNHTMLtoPDF.convert(options);
+      await RNFS.writeFile(fileName, temp.base64, 'base64');
+              // clear cache file in /data/user/0/com.purewoodtoolkit/cache
+      await RNFS.unlink(temp.filePath);
+      dispatch(resetAll());
+      dispatch(setTimeValue(CONTAINER.SET_OPEN_TIME));
+        
+    } catch(err){
+      console.log('error in export action', err);
+      dispatch(clearLoading());
+      dispatch(displayError(LANGUAGE.INTERNAL_ERROR));
+    }
+
   }
   
 };

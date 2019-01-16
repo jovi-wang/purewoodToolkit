@@ -8,8 +8,11 @@ import * as actions from './action';
 import { coefficientDisplayList, CONTAINER, LANGUAGE, lengthTypeList } from './constant';
 import { getStartEndTime } from './helper';
 
-const totalWidth = Math.max(Dimensions.get('window').width, Dimensions.get('window').height) - 4 ;
-const cellWidth = Math.floor(totalWidth/3);
+const totalWidth = Math.min(Dimensions.get('window').width, Dimensions.get('window').height) - 4 ;
+const cellWidth_1 = Math.floor(totalWidth * 0.23);
+const cellWidth = Math.floor(totalWidth * 0.23);
+const cellWidth_2 = Math.floor(totalWidth * 0.43);
+const cellWidth_3 = Math.floor(totalWidth * 0.34);
 const cellHeight = 28;
 const borderWidthValue = 2;
 const fontSizeValue = 15;
@@ -88,7 +91,6 @@ class ContainerScreen extends Component {
         });
         return (
             <Dialog.Container visible={this.props.showPicker}>
-                
                 {pickerItems}
             </Dialog.Container>
         )
@@ -121,16 +123,16 @@ class ContainerScreen extends Component {
     renderStickyHeader() {
         const { name, tare, yard, pieces, m3, openTime, startTime, endTime, lengthType } = this.props;
         return (
-            <View style={{paddingTop:2,paddingHorizontal: 2, backgroundColor: 'white'}}>
+            <View style={{paddingTop:2, paddingHorizontal: 2, backgroundColor: 'white'}}>
                 <View style={{ 
                     flex:1,
                     width: totalWidth, height: cellHeight, flexDirection: 'row',
                     ...styles.borderAll
                     }}>
-                    <Text style={{
+                    {/* <Text style={{
                         ...styles.normalText, width: cellWidth,
                         ...styles.borderRight, fontWeight: 'bold'
-                    }}>{LANGUAGE.CONTAINER_NAME}</Text>
+                    }}>{LANGUAGE.CONTAINER_NAME}</Text> */}
                     <TextInput
                         style={{
                             flex: 1, padding: 0, ...styles.normalText
@@ -144,10 +146,10 @@ class ContainerScreen extends Component {
                     width: totalWidth, height: cellHeight, flexDirection: 'row', 
                     ...styles.borderBottom, ...styles.borderHorizontal
                     }}>
-                    <Text style={{
+                    {/* <Text style={{
                         ...styles.normalText, ...styles.borderRight,
                         width: cellWidth, fontWeight: 'bold'
-                    }}>{LANGUAGE.LENGTH}</Text>
+                    }}>{LANGUAGE.LENGTH}</Text> */}
                     <Text style={{
                         ...styles.normalText, flex: 1,
                         width: cellWidth }}
@@ -159,48 +161,11 @@ class ContainerScreen extends Component {
                     width: totalWidth, height: cellHeight, flexDirection: 'row', 
                     ...styles.borderHorizontal, ...styles.borderBottom
                     }}>
-                    <Text style={{
+                    {/* <Text style={{
                         ...styles.normalText, 
                         ...styles.borderRight,
                         width: cellWidth, fontWeight: 'bold'
-                    }}>{LANGUAGE.YARD}</Text>
-                    <TextInput
-                        style={{
-                            flex:1, padding: 0, ...styles.normalText
-                        }}
-                        placeholder={LANGUAGE.YARD_PLACEHOLDER}
-                        onChangeText={(text) => this.onChangeTextInputValue(CONTAINER.CHANGE_YARD, text)}
-                        value={yard}
-                    />
-                </View>
-                <View style={{ 
-                    width: totalWidth, height: cellHeight, flexDirection: 'row', 
-                    ...styles.borderHorizontal, ...styles.borderBottom
-                    }}>
-                    <Text style={{
-                        ...styles.normalText, 
-                        ...styles.borderRight,
-                        width: cellWidth, fontWeight: 'bold'
-                    }}>{LANGUAGE.TARE}</Text>
-                    <TextInput
-                        style={{
-                            flex:1, textAlign: 'center', textAlignVertical: 'center', 
-                            fontSize: fontSizeValue, padding: 0
-                        }}
-                        placeholder={LANGUAGE.TARE_PLACEHOLDER}
-                        onChangeText={(text) => this.onChangeTextInputValue(CONTAINER.CHANGE_TARE, text)}
-                        value={tare}
-                    />
-                </View>
-                <View style={{ 
-                    width: totalWidth, height: cellHeight, flexDirection: 'row', 
-                    ...styles.borderHorizontal, ...styles.borderBottom
-                    }}>
-                    <Text style={{
-                        ...styles.normalText, 
-                        ...styles.borderRight,
-                        width: cellWidth, fontWeight: 'bold'
-                    }}>{LANGUAGE.DATE}</Text>
+                    }}>{LANGUAGE.DATE}</Text> */}
                     <Text style={{
                         flex: 1,
                         ...styles.normalText
@@ -210,11 +175,11 @@ class ContainerScreen extends Component {
                     width: totalWidth, height: cellHeight, flexDirection: 'row', 
                     ...styles.borderHorizontal, ...styles.borderBottom
                     }}>
-                    <Text style={{
+                    {/* <Text style={{
                         ...styles.normalText, 
                         ...styles.borderRight,
                         width: cellWidth, fontWeight: 'bold'
-                    }}>{LANGUAGE.START_END_TIME}</Text>
+                    }}>{LANGUAGE.START_END_TIME}</Text> */}
                     <Text style={{
                         flex: 1,
                         ...styles.normalText
@@ -222,52 +187,76 @@ class ContainerScreen extends Component {
                 </View>
                 <View style={{ 
                     width: totalWidth, height: cellHeight * 2, flexDirection: 'row', 
-                    ...styles.borderHorizontal, ...styles.borderBottom, backgroundColor: '#e2d451'
+                    ...styles.borderHorizontal, ...styles.borderBottom, backgroundColor: '#fcea99'
                     }}>
-                    <Text style={{
+                    {/* <Text style={{
                         ...styles.normalText, 
                         ...styles.borderRight,
                         width: cellWidth, fontWeight: 'bold'
-                    }}>{LANGUAGE.TOTAL}</Text>
+                    }}>{LANGUAGE.TOTAL}</Text> */}
                     <View style = {{flexDirection: 'column'}}>
                         <Text style={{
-                                height: cellHeight,
-                                ...styles.normalText, width: cellWidth,
+                                height: cellHeight, fontWeight: 'bold',
+                                ...styles.normalText, width: cellWidth_1,
                                 ...styles.borderRight, ...styles.borderBottom
-                            }}>{LANGUAGE.PIECES}</Text>
+                            }}>{LANGUAGE.TOTAL_PIECES}</Text>
                         <Text style={{
-                                height: cellHeight,
-                                ...styles.normalText, width: cellWidth,
+                                height: cellHeight, fontWeight: 'bold',
+                                ...styles.normalText, width: cellWidth_1,
                                 ...styles.borderRight, ...styles.borderBottom
-                            }}>{LANGUAGE.M3}</Text>
+                            }}>{LANGUAGE.TOTAL_M3}</Text>
                     </View>
                     <View style = {{flexDirection: 'column'}}>
                         <Text style={{
                                 height: cellHeight,
-                                ...styles.normalText, width: cellWidth -2,
-                                ...styles.borderBottom
+                                ...styles.normalText, width: cellWidth_2,
+                                ...styles.borderBottom, ...styles.borderRight
                             }}>{pieces}</Text>
                         <Text style={{
                                 height: cellHeight,
-                                ...styles.normalText, width: cellWidth -2,
-                                ...styles.borderBottom
+                                ...styles.normalText, width: cellWidth_2,
+                                ...styles.borderBottom, ...styles.borderRight
                             }}>{m3}</Text>
+                    </View>
+                    <View style = {{flexDirection: 'column', flex: 1, 
+                                    justifyContent: 'center', alignItems: 'center'}}>
+                        <View style= {{flex:1, ...styles.borderBottom, width:'100%'}}>
+                        <TextInput
+                        style={{
+                            flex:1, textAlign: 'center', textAlignVertical: 'center', 
+                            fontSize: fontSizeValue, padding: 0
+                        }}
+                        placeholder={LANGUAGE.YARD_PLACEHOLDER}
+                        onChangeText={(text) => this.onChangeTextInputValue(CONTAINER.CHANGE_YARD, text)}
+                        value={yard}
+                        />
+                        </View>
+                        <TextInput
+                            style={{
+                                flex:1, textAlign: 'center', textAlignVertical: 'center', 
+                                fontSize: fontSizeValue, padding: 0
+                            }}
+                            placeholder={LANGUAGE.TARE_PLACEHOLDER}
+                            onChangeText={(text) => this.onChangeTextInputValue(CONTAINER.CHANGE_TARE, text)}
+                            value={tare}
+                        />
+                       
                     </View>
                 </View>
                 <View style={{ 
                     width: totalWidth, height: cellHeight, flexDirection: 'row', 
-                    ...styles.borderHorizontal, ...styles.borderBottom, backgroundColor: '#9df441'
+                    ...styles.borderHorizontal, ...styles.borderBottom, backgroundColor: '#a5f49c'
                     }}>
                     <Text style={{
-                        ...styles.normalText, width: cellWidth,
+                        ...styles.normalText, width: cellWidth_1,
                         ...styles.borderRight, fontWeight: 'bold'
                     }}>{LANGUAGE.DIAMETER}</Text>
                     <Text style={{
-                         ...styles.normalText, width: cellWidth,
+                         ...styles.normalText, width: cellWidth_2,
                          ...styles.borderRight, fontWeight: 'bold'
                     }}>{LANGUAGE.PCS}</Text>
                     <Text style={{
-                         ...styles.normalText, width: cellWidth, fontWeight: 'bold'
+                         ...styles.normalText, width: cellWidth_3, fontWeight: 'bold'
                     }}>{LANGUAGE.COEFFICIENT}</Text>
                 </View>
             </View>    

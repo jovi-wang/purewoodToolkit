@@ -5,11 +5,14 @@ import { connect } from 'react-redux';
 import * as actions from '../action';
 import { pcsValueLimit, LANGUAGE, CONTAINER } from '../constant';
 
-const totalWidth = Math.max(Dimensions.get('window').width, Dimensions.get('window').height) -4 ;
-const cellWidth = Math.floor(totalWidth/3);
-const cellHeight = 28;
+const totalWidth = Math.min(Dimensions.get('window').width, Dimensions.get('window').height) - 4 ;
+const buttonWidth = Math.floor(totalWidth * 0.12);
+const cellWidth_1 = Math.floor(totalWidth * 0.23);
+const cellWidth_2 = Math.floor(totalWidth * 0.43);
+const cellWidth_3 = Math.floor(totalWidth * 0.34);
+const cellHeight = 42;
 const borderWidthValue = 2;
-const fontSizeValue = 15;
+const fontSizeValue = 22;
 
 class PCSListItem extends Component {
     constructor(props) {
@@ -50,29 +53,29 @@ class PCSListItem extends Component {
                     ...styles.borderHorizontal, ...styles.borderBottom
                     }}>
                     <Text style={{
-                        ...styles.normalText, width: cellWidth,
-                        ...styles.borderRight, fontWeight: 'bold', backgroundColor: '#9df441'
+                        ...styles.normalText, width: cellWidth_1,
+                        ...styles.borderRight, fontWeight: 'bold', backgroundColor: '#a5f49c'
                     }}>{this.props.id}</Text>
                     <View style = {{
                         ...styles.borderRight, justifyContent: 'space-between',
-                        flexDirection: 'row', width: cellWidth
+                        flexDirection: 'row', width: cellWidth_2
                         }}>
-                        <TouchableOpacity onPress={this.onPressMinus}>
-                            <Text style={{...styles.normalText,
-                            width: 40, fontWeight: 'bold'
+                        <TouchableOpacity style={{ backgroundColor: '#f4fc8a' }} onPress={this.onPressMinus}>
+                            <Text style={{...styles.normalText, fontSize: 26,
+                            width: buttonWidth, fontWeight: 'bold', color: 'red', 
                             }}>{'−'}</Text>
                         </TouchableOpacity>
                         <Text style={{ 
                             ...styles.normalText
                         }}>{this.props.pcs}</Text>
-                        <TouchableOpacity onPress={this.onPressAdd}>
-                        <Text style={{...styles.normalText, 
-                            width: 40, fontWeight: 'bold'
-                            }}>{'+'}</Text>
+                        <TouchableOpacity style={{ backgroundColor: '#f4fc8a' }} onPress={this.onPressAdd}>
+                            <Text style={{...styles.normalText, fontSize: 26,
+                                width: buttonWidth, fontWeight: 'bold', color: 'red'
+                                }}>{'+'}</Text>
                         </TouchableOpacity>
                     </View>
                     <Text style={{
-                         ...styles.normalText, width: cellWidth, fontWeight: 'bold'
+                         ...styles.normalText, width: cellWidth_3
                     }}>{this.props.coefficient>0 ? this.props.coefficient: ''}</Text>
                 </View>
         </View>
