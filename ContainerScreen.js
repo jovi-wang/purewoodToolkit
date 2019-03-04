@@ -3,12 +3,12 @@ import { PermissionsAndroid, Dimensions, TextInput, ActivityIndicator, Touchable
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 
-import PCSListItem  from './components/PCSListItem';
+import PCSListItem from './components/PCSListItem';
 import * as actions from './action';
 import { coefficientDisplayList, CONTAINER, LANGUAGE, lengthTypeList } from './constant';
-import { getStartEndTime } from './helper';
+// import { getStartEndTime } from './helper';
 
-const totalWidth = Math.min(Dimensions.get('window').width, Dimensions.get('window').height) - 4 ;
+const totalWidth = Math.min(Dimensions.get('window').width, Dimensions.get('window').height) - 4;
 const cellWidth_1 = Math.floor(totalWidth * 0.23);
 const cellWidth = Math.floor(totalWidth * 0.23);
 const cellWidth_2 = Math.floor(totalWidth * 0.43);
@@ -33,8 +33,8 @@ class ContainerScreen extends Component {
         this.createDataSource(nextProps);
     }
     createDataSource({ pcsList, lengthType }) {
-        this.dataSource = pcsList.map((element, index)=>({
-            id: String(index+12),
+        this.dataSource = pcsList.map((element, index) => ({
+            id: String(index + 12),
             index,
             pcs: element,
             coefficient: coefficientDisplayList[lengthType][index]
@@ -42,31 +42,31 @@ class ContainerScreen extends Component {
     }
     // events handler
     onResetExport = () => {
-        if(this.disable) return;
-        this.disable= true;
+        if (this.disable) return;
+        this.disable = true;
         const { name } = this.props;
         if (!name) {
             this.props.displayError(LANGUAGE.ENTER_CONTAINER_NAME_FIRST);
         } else {
             this.props.resetExport(this.props);
         }
-        setTimeout(()=>this.disable= false, preventTappingDelay);
+        setTimeout(() => this.disable = false, preventTappingDelay);
     };
     onChangeLengthType = (typeValue) => {
         this.props.changeLengthType(typeValue);
         this.props.clearLengthTypePicker();
     }
-    onChangeTextInputValue = (inputName, value) => {
-        this.props.changeTextInputValue(inputName, value);
-    }
+    // onChangeTextInputValue = (inputName, value) => {
+    //     this.props.changeTextInputValue(inputName, value);
+    // }
     onClearErrorMessage = () => {
         this.props.clearError();
     }
-    displayLengthTypePicker = ()=>{
-        if(this.disable) return;
-        this.disable= true;
+    displayLengthTypePicker = () => {
+        if (this.disable) return;
+        this.disable = true;
         this.props.displayLengthTypePicker();
-        setTimeout(()=>this.disable= false, preventTappingDelay);
+        setTimeout(() => this.disable = false, preventTappingDelay);
     }
     // render components
     renderErrorDialog() {
@@ -78,10 +78,10 @@ class ContainerScreen extends Component {
         )
     }
     renderLengthTypePicker() {
-        const pickerItems = lengthTypeList.map((value, index)=> {
-            if (index>0) {
+        const pickerItems = lengthTypeList.map((value, index) => {
+            if (index > 0) {
                 return (
-                    <Dialog.Description key={index} onPress={()=>this.onChangeLengthType(index)}>{value}</Dialog.Description>
+                    <Dialog.Description key={index} onPress={() => this.onChangeLengthType(index)}>{value}</Dialog.Description>
                 )
             }
             //use first element to render title
@@ -96,170 +96,102 @@ class ContainerScreen extends Component {
         )
     }
     renderFooterButton() {
-        if(this.props.loading) {
+        if (this.props.loading) {
             return (
-                <View style={{flex:1, flexDirection: 'row', height: cellHeight * 1.5, padding: 3}}>
-                    <View style={{flex:1}}></View>
-                    <View style={{width: totalWidth/2, justifyContent: 'center'}}>
-                        <ActivityIndicator size='large'/>
+                <View style={{ flex: 1, flexDirection: 'row', height: cellHeight * 1.5, padding: 3 }}>
+                    <View style={{ flex: 1 }}></View>
+                    <View style={{ width: totalWidth / 2, justifyContent: 'center' }}>
+                        <ActivityIndicator size='large' />
                     </View>
                 </View>
             );
         }
         return (
-            <View style={{flex:1, flexDirection: 'row', height: cellHeight * 1.5, padding: 3}}>
-                    <View style={{flex:1}}></View>
-                    <TouchableOpacity 
-                        disabled={this.disable}
-                        onPress={this.onResetExport}>
-                        <Text style={{...styles.normalText, 
-                        width: totalWidth/2, fontSize: styles.normalText.fontSize + 8,
-                        borderWidth: 1, borderColor: 'black',  borderRadius: 5
-                        }}>{LANGUAGE.EXPORT_AND_RESET}</Text>
-                    </TouchableOpacity>
-                </View>
+            <View style={{ flex: 1, flexDirection: 'row', height: cellHeight * 1.5, padding: 3 }}>
+                <View style={{ flex: 1 }}></View>
+                <TouchableOpacity
+                    disabled={this.disable}
+                    onPress={this.onResetExport}>
+                    <Text style={{
+                        ...styles.normalText,
+                        width: totalWidth / 2, fontSize: styles.normalText.fontSize + 8,
+                        borderWidth: 1, borderColor: 'black', borderRadius: 5
+                    }}>{LANGUAGE.EXPORT_AND_RESET}</Text>
+                </TouchableOpacity>
+            </View>
         );
     }
     renderStickyHeader() {
         const { name, tare, yard, pieces, m3, openTime, startTime, endTime, lengthType } = this.props;
         return (
-            <View style={{paddingTop:2, paddingHorizontal: 2, backgroundColor: 'white'}}>
-                <View style={{ 
-                    flex:1,
+            <View style={{ paddingTop: 2, paddingHorizontal: 2, backgroundColor: 'white' }}>
+                <View style={{
                     width: totalWidth, height: cellHeight, flexDirection: 'row',
                     ...styles.borderAll
-                    }}>
-                    {/* <Text style={{
-                        ...styles.normalText, width: cellWidth,
-                        ...styles.borderRight, fontWeight: 'bold'
-                    }}>{LANGUAGE.CONTAINER_NAME}</Text> */}
-                    <TextInput
-                        style={{
-                            flex: 1, padding: 0, ...styles.normalText
-                        }}
-                        placeholder={LANGUAGE.CONTAINER_NAME_PLACEHOLDER}
-                        onChangeText={(text) => this.onChangeTextInputValue(CONTAINER.CHANGE_NAME, text)}
-                        value={name} 
-                    />
-                </View>
-                <View style={{ 
-                    width: totalWidth, height: cellHeight, flexDirection: 'row', 
-                    ...styles.borderBottom, ...styles.borderHorizontal
-                    }}>
+                }}>
                     {/* <Text style={{
                         ...styles.normalText, ...styles.borderRight,
                         width: cellWidth, fontWeight: 'bold'
                     }}>{LANGUAGE.LENGTH}</Text> */}
                     <Text style={{
                         ...styles.normalText, flex: 1,
-                        width: cellWidth }}
+                        width: cellWidth
+                    }}
                         disabled={this.disable}
-                        onPress = {this.displayLengthTypePicker}
-                        >{lengthType ? lengthTypeList[lengthType] : LANGUAGE.LENGTH_PLACEHOLDER}</Text>
+                        onPress={this.displayLengthTypePicker}
+                    >{lengthType ? lengthTypeList[lengthType] : LANGUAGE.LENGTH_PLACEHOLDER}</Text>
                 </View>
-                <View style={{ 
-                    width: totalWidth, height: cellHeight, flexDirection: 'row', 
-                    ...styles.borderHorizontal, ...styles.borderBottom
-                    }}>
-                    {/* <Text style={{
-                        ...styles.normalText, 
-                        ...styles.borderRight,
-                        width: cellWidth, fontWeight: 'bold'
-                    }}>{LANGUAGE.DATE}</Text> */}
-                    <Text style={{
-                        flex: 1,
-                        ...styles.normalText
-                    }}>{openTime.date}</Text>
-                </View>
-                <View style={{ 
-                    width: totalWidth, height: cellHeight, flexDirection: 'row', 
-                    ...styles.borderHorizontal, ...styles.borderBottom
-                    }}>
-                    {/* <Text style={{
-                        ...styles.normalText, 
-                        ...styles.borderRight,
-                        width: cellWidth, fontWeight: 'bold'
-                    }}>{LANGUAGE.START_END_TIME}</Text> */}
-                    <Text style={{
-                        flex: 1,
-                        ...styles.normalText
-                    }}>{getStartEndTime(startTime, endTime)}</Text>
-                </View>
-                <View style={{ 
-                    width: totalWidth, height: cellHeight * 2, flexDirection: 'row', 
+                <View style={{
+                    width: totalWidth, height: cellHeight * 2, flexDirection: 'row',
                     ...styles.borderHorizontal, ...styles.borderBottom, backgroundColor: '#fcea99'
-                    }}>
+                }}>
                     {/* <Text style={{
                         ...styles.normalText, 
                         ...styles.borderRight,
                         width: cellWidth, fontWeight: 'bold'
                     }}>{LANGUAGE.TOTAL}</Text> */}
-                    <View style = {{flexDirection: 'column'}}>
+                    <View style={{ flexDirection: 'column' }}>
                         <Text style={{
-                                height: cellHeight, fontWeight: 'bold',
-                                ...styles.normalText, width: cellWidth_1,
-                                ...styles.borderRight, ...styles.borderBottom
-                            }}>{LANGUAGE.TOTAL_PIECES}</Text>
+                            height: cellHeight, fontWeight: 'bold',
+                            ...styles.normalText, width: cellWidth_1,
+                            ...styles.borderRight, ...styles.borderBottom
+                        }}>{LANGUAGE.TOTAL_PIECES}</Text>
                         <Text style={{
-                                height: cellHeight, fontWeight: 'bold',
-                                ...styles.normalText, width: cellWidth_1,
-                                ...styles.borderRight, ...styles.borderBottom
-                            }}>{LANGUAGE.TOTAL_M3}</Text>
+                            height: cellHeight, fontWeight: 'bold',
+                            ...styles.normalText, width: cellWidth_1,
+                            ...styles.borderRight, ...styles.borderBottom
+                        }}>{LANGUAGE.TOTAL_M3}</Text>
                     </View>
-                    <View style = {{flexDirection: 'column'}}>
+                    <View style={{ flexDirection: 'column', flex: 1 }}>
                         <Text style={{
-                                height: cellHeight,
-                                ...styles.normalText, width: cellWidth_2,
-                                ...styles.borderBottom, ...styles.borderRight
-                            }}>{pieces}</Text>
+                            height: cellHeight,
+                            ...styles.normalText,
+                            ...styles.borderBottom
+                        }}>{pieces}</Text>
                         <Text style={{
-                                height: cellHeight,
-                                ...styles.normalText, width: cellWidth_2,
-                                ...styles.borderBottom, ...styles.borderRight
-                            }}>{m3}</Text>
-                    </View>
-                    <View style = {{flexDirection: 'column', flex: 1, 
-                                    justifyContent: 'center', alignItems: 'center'}}>
-                        <View style= {{flex:1, ...styles.borderBottom, width:'100%'}}>
-                        <TextInput
-                        style={{
-                            flex:1, textAlign: 'center', textAlignVertical: 'center', 
-                            fontSize: fontSizeValue, padding: 0
-                        }}
-                        placeholder={LANGUAGE.YARD_PLACEHOLDER}
-                        onChangeText={(text) => this.onChangeTextInputValue(CONTAINER.CHANGE_YARD, text)}
-                        value={yard}
-                        />
-                        </View>
-                        <TextInput
-                            style={{
-                                flex:1, textAlign: 'center', textAlignVertical: 'center', 
-                                fontSize: fontSizeValue, padding: 0
-                            }}
-                            placeholder={LANGUAGE.TARE_PLACEHOLDER}
-                            onChangeText={(text) => this.onChangeTextInputValue(CONTAINER.CHANGE_TARE, text)}
-                            value={tare}
-                        />
-                       
+                            height: cellHeight,
+                            ...styles.normalText,
+                            ...styles.borderBottom
+                        }}>{m3}</Text>
                     </View>
                 </View>
-                <View style={{ 
-                    width: totalWidth, height: cellHeight, flexDirection: 'row', 
+                <View style={{
+                    width: totalWidth, height: cellHeight, flexDirection: 'row',
                     ...styles.borderHorizontal, ...styles.borderBottom, backgroundColor: '#a5f49c'
-                    }}>
+                }}>
                     <Text style={{
                         ...styles.normalText, width: cellWidth_1,
                         ...styles.borderRight, fontWeight: 'bold'
                     }}>{LANGUAGE.DIAMETER}</Text>
                     <Text style={{
-                         ...styles.normalText, width: cellWidth_2,
-                         ...styles.borderRight, fontWeight: 'bold'
+                        ...styles.normalText, width: cellWidth_2,
+                        ...styles.borderRight, fontWeight: 'bold'
                     }}>{LANGUAGE.PCS}</Text>
                     <Text style={{
-                         ...styles.normalText, width: cellWidth_3, fontWeight: 'bold'
+                        ...styles.normalText, width: cellWidth_3, fontWeight: 'bold'
                     }}>{LANGUAGE.COEFFICIENT}</Text>
                 </View>
-            </View>    
+            </View>
         )
     }
 
@@ -278,24 +210,24 @@ class ContainerScreen extends Component {
                         data={this.dataSource}
                         keyExtractor={(item) => item.id}
                         extraData={pcsList}
-                        renderItem={({item}) => <PCSListItem value={item}/>}
+                        renderItem={({ item }) => <PCSListItem value={item} />}
                     />
                 </ScrollView>
-                
+
             </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    normalText: { 
-        textAlign: 'center', 
+    normalText: {
+        textAlign: 'center',
         textAlignVertical: 'center',
         color: 'black',
         fontSize: fontSizeValue
     },
     borderAll: {
-        borderColor: 'black', borderWidth: borderWidthValue 
+        borderColor: 'black', borderWidth: borderWidthValue
     },
     borderRight: {
         borderColor: 'black', borderRightWidth: borderWidthValue
@@ -310,19 +242,19 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-      error: state.common.error,
-      loading: state.common.loading,
-      showPicker: state.common.showPicker,
-      pcsList: state.container.pcsList,
-      lengthType: state.container.lengthType,
-      pieces: state.container.pieces,
-      m3: state.container.m3,
-      name: state.container.name,
-      tare: state.container.tare,
-      yard: state.container.yard,
-      openTime: state.container.openTime,
-      startTime: state.container.startTime,
-      endTime: state.container.endTime
+        error: state.common.error,
+        loading: state.common.loading,
+        showPicker: state.common.showPicker,
+        pcsList: state.container.pcsList,
+        lengthType: state.container.lengthType,
+        pieces: state.container.pieces,
+        m3: state.container.m3,
+        name: state.container.name,
+        tare: state.container.tare,
+        yard: state.container.yard,
+        openTime: state.container.openTime,
+        startTime: state.container.startTime,
+        endTime: state.container.endTime
     };
 };
 
