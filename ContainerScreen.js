@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { PermissionsAndroid, Dimensions, TextInput, ActivityIndicator, TouchableOpacity, StyleSheet, Text, View, FlatList, ScrollView } from 'react-native';
+import { PermissionsAndroid, Dimensions, 
+    ActivityIndicator, TouchableOpacity, StyleSheet, 
+    Text, View, FlatList, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 
@@ -9,10 +11,9 @@ import { coefficientDisplayList, CONTAINER, LANGUAGE, lengthTypeList } from './c
 // import { getStartEndTime } from './helper';
 
 const totalWidth = Math.min(Dimensions.get('window').width, Dimensions.get('window').height) - 4;
-const cellWidth_1 = Math.floor(totalWidth * 0.23);
-const cellWidth = Math.floor(totalWidth * 0.23);
-const cellWidth_2 = Math.floor(totalWidth * 0.43);
-const cellWidth_3 = Math.floor(totalWidth * 0.34);
+const cellWidthLeft = Math.floor(totalWidth * 0.23);
+const cellWidthMiddle = Math.floor(totalWidth * 0.43);
+const cellWidthRight = Math.floor(totalWidth * 0.34);
 const cellHeight = 28;
 const borderWidthValue = 2;
 const fontSizeValue = 15;
@@ -23,7 +24,7 @@ class ContainerScreen extends Component {
         super(props);
         this.disable = false;
         this.rotate = false;
-        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE)
+        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
         this.props.setTimeValue(CONTAINER.SET_OPEN_TIME);
     }
     componentWillMount() {
@@ -32,14 +33,7 @@ class ContainerScreen extends Component {
     componentWillReceiveProps(nextProps) {
         this.createDataSource(nextProps);
     }
-    createDataSource({ pcsList, lengthType }) {
-        this.dataSource = pcsList.map((element, index) => ({
-            id: String(index + 12),
-            index,
-            pcs: element,
-            coefficient: coefficientDisplayList[lengthType][index]
-        }))
-    }
+    
     // events handler
     onResetExport = () => {
         if (this.disable) return;
@@ -50,7 +44,7 @@ class ContainerScreen extends Component {
         } else {
             this.props.resetExport(this.props);
         }
-        setTimeout(() => this.disable = false, preventTappingDelay);
+        setTimeout(() => { this.disable = false; }, preventTappingDelay);
     };
     onChangeLengthType = (typeValue) => {
         this.props.changeLengthType(typeValue);
@@ -66,7 +60,15 @@ class ContainerScreen extends Component {
         if (this.disable) return;
         this.disable = true;
         this.props.displayLengthTypePicker();
-        setTimeout(() => this.disable = false, preventTappingDelay);
+        setTimeout(() => { this.disable = false; }, preventTappingDelay);
+    }
+    createDataSource({ pcsList, lengthType }) {
+        this.dataSource = pcsList.map((element, index) => ({
+            id: String(index + 12),
+            index,
+            pcs: element,
+            coefficient: coefficientDisplayList[lengthType][index]
+        }));
     }
     // render components
     renderErrorDialog() {
@@ -75,31 +77,39 @@ class ContainerScreen extends Component {
                 <Dialog.Title>{this.props.error}</Dialog.Title>
                 <Dialog.Button label={LANGUAGE.OK} onPress={this.onClearErrorMessage} />
             </Dialog.Container>
-        )
+        );
     }
     renderLengthTypePicker() {
         const pickerItems = lengthTypeList.map((value, index) => {
             if (index > 0) {
                 return (
-                    <Dialog.Description key={index} onPress={() => this.onChangeLengthType(index)}>{value}</Dialog.Description>
-                )
+                    <Dialog.Description
+                        key={index} 
+                        onPress={() => this.onChangeLengthType(index)}
+                    >{value}</Dialog.Description>
+                );
             }
             //use first element to render title
             return (
                 <Dialog.Title key={index}>{value}</Dialog.Title>
-            )
+            );
         });
         return (
             <Dialog.Container visible={this.props.showPicker}>
                 {pickerItems}
             </Dialog.Container>
-        )
+        );
     }
     renderFooterButton() {
         if (this.props.loading) {
             return (
-                <View style={{ flex: 1, flexDirection: 'row', height: cellHeight * 1.5, padding: 3 }}>
-                    <View style={{ flex: 1 }}></View>
+                <View
+                    style={{ flex: 1,
+                    flexDirection: 'row', 
+                    height: cellHeight * 1.5,
+                    padding: 3 }}
+                >
+                    <View style={{ flex: 1 }} />
                     <View style={{ width: totalWidth / 2, justifyContent: 'center' }}>
                         <ActivityIndicator size='large' />
                     </View>
@@ -108,91 +118,135 @@ class ContainerScreen extends Component {
         }
         return (
             <View style={{ flex: 1, flexDirection: 'row', height: cellHeight * 1.5, padding: 3 }}>
-                <View style={{ flex: 1 }}></View>
+                <View style={{ flex: 1 }} />
                 <TouchableOpacity
                     disabled={this.disable}
-                    onPress={this.onResetExport}>
-                    <Text style={{
+                    onPress={this.onResetExport}
+                >
+                    <Text
+                        style={{
                         ...styles.normalText,
-                        width: totalWidth / 2, fontSize: styles.normalText.fontSize + 8,
-                        borderWidth: 1, borderColor: 'black', borderRadius: 5
-                    }}>{LANGUAGE.EXPORT_AND_RESET}</Text>
+                        width: totalWidth / 2,
+                        fontSize: styles.normalText.fontSize + 8,
+                        borderWidth: 1,
+                        borderColor: 'black',
+                        borderRadius: 5
+                    }}
+                    >{LANGUAGE.EXPORT_AND_RESET}</Text>
                 </TouchableOpacity>
             </View>
         );
     }
     renderStickyHeader() {
-        const { name, tare, yard, pieces, m3, openTime, startTime, endTime, lengthType } = this.props;
+        const { pieces, m3, lengthType } = this.props;
         return (
             <View style={{ paddingTop: 2, paddingHorizontal: 2, backgroundColor: 'white' }}>
-                <View style={{
-                    width: totalWidth, height: cellHeight, flexDirection: 'row',
+                <View
+                    style={{
+                    width: totalWidth,
+                    height: cellHeight,
+                    flexDirection: 'row',
                     ...styles.borderAll
-                }}>
-                    {/* <Text style={{
-                        ...styles.normalText, ...styles.borderRight,
-                        width: cellWidth, fontWeight: 'bold'
-                    }}>{LANGUAGE.LENGTH}</Text> */}
-                    <Text style={{
-                        ...styles.normalText, flex: 1,
-                        width: cellWidth
+                }}
+                >
+                    <Text
+                        style={{
+                        ...styles.normalText,
+                        flex: 1,
+                        width: cellWidthLeft
                     }}
                         disabled={this.disable}
                         onPress={this.displayLengthTypePicker}
                     >{lengthType ? lengthTypeList[lengthType] : LANGUAGE.LENGTH_PLACEHOLDER}</Text>
                 </View>
-                <View style={{
-                    width: totalWidth, height: cellHeight * 2, flexDirection: 'row',
-                    ...styles.borderHorizontal, ...styles.borderBottom, backgroundColor: '#fcea99'
-                }}>
+                <View
+                    style={{
+                    width: totalWidth,
+                    height: cellHeight * 2,
+                    flexDirection: 'row',
+                    ...styles.borderHorizontal,
+                    ...styles.borderBottom,
+                    backgroundColor: '#fcea99'
+                }}
+                >
                     {/* <Text style={{
                         ...styles.normalText, 
                         ...styles.borderRight,
                         width: cellWidth, fontWeight: 'bold'
                     }}>{LANGUAGE.TOTAL}</Text> */}
                     <View style={{ flexDirection: 'column' }}>
-                        <Text style={{
-                            height: cellHeight, fontWeight: 'bold',
-                            ...styles.normalText, width: cellWidth_1,
-                            ...styles.borderRight, ...styles.borderBottom
-                        }}>{LANGUAGE.TOTAL_PIECES}</Text>
-                        <Text style={{
-                            height: cellHeight, fontWeight: 'bold',
-                            ...styles.normalText, width: cellWidth_1,
-                            ...styles.borderRight, ...styles.borderBottom
-                        }}>{LANGUAGE.TOTAL_M3}</Text>
+                        <Text
+                            style={{
+                            height: cellHeight,
+                            fontWeight: 'bold',
+                            ...styles.normalText,
+                            width: cellWidthLeft,
+                            ...styles.borderRight,
+                            ...styles.borderBottom
+                        }}
+                        >{LANGUAGE.TOTAL_PIECES}</Text>
+                        <Text
+                            style={{
+                            height: cellHeight,
+                            fontWeight: 'bold',
+                            ...styles.normalText,
+                            width: cellWidthLeft,
+                            ...styles.borderRight,
+                            ...styles.borderBottom
+                        }}
+                        >{LANGUAGE.TOTAL_M3}</Text>
                     </View>
                     <View style={{ flexDirection: 'column', flex: 1 }}>
-                        <Text style={{
+                        <Text
+                            style={{
                             height: cellHeight,
                             ...styles.normalText,
                             ...styles.borderBottom
-                        }}>{pieces}</Text>
-                        <Text style={{
+                        }}
+                        >{pieces}</Text>
+                        <Text
+                            style={{
                             height: cellHeight,
                             ...styles.normalText,
                             ...styles.borderBottom
-                        }}>{m3}</Text>
+                        }}
+                        >{m3}</Text>
                     </View>
                 </View>
-                <View style={{
-                    width: totalWidth, height: cellHeight, flexDirection: 'row',
-                    ...styles.borderHorizontal, ...styles.borderBottom, backgroundColor: '#a5f49c'
-                }}>
-                    <Text style={{
-                        ...styles.normalText, width: cellWidth_1,
-                        ...styles.borderRight, fontWeight: 'bold'
-                    }}>{LANGUAGE.DIAMETER}</Text>
-                    <Text style={{
-                        ...styles.normalText, width: cellWidth_2,
-                        ...styles.borderRight, fontWeight: 'bold'
-                    }}>{LANGUAGE.PCS}</Text>
-                    <Text style={{
-                        ...styles.normalText, width: cellWidth_3, fontWeight: 'bold'
-                    }}>{LANGUAGE.COEFFICIENT}</Text>
+                <View
+                style={{
+                width: totalWidth,
+                height: cellHeight,
+                flexDirection: 'row',
+                ...styles.borderHorizontal,
+                ...styles.borderBottom,
+                backgroundColor: '#a5f49c'
+                }}
+                >
+                    <Text
+                        style={{
+                            ...styles.normalText,
+                        width: cellWidthLeft,
+                            ...styles.borderRight,
+                        fontWeight: 'bold'
+                        }}
+                    >{LANGUAGE.DIAMETER}</Text>
+                    <Text
+                        style={{
+                            ...styles.normalText,
+                        width: cellWidthMiddle,
+                            ...styles.borderRight,
+                        fontWeight: 'bold'
+                        }}
+                    >{LANGUAGE.PCS}</Text>
+                    <Text
+                        style={{
+                        ...styles.normalText, width: cellWidthRight, fontWeight: 'bold'
+                    }}
+                    >{LANGUAGE.COEFFICIENT}</Text>
                 </View>
             </View>
-        )
+        );
     }
 
     render() {

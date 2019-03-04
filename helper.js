@@ -1,12 +1,13 @@
 import moment from 'moment-timezone';
-import { coefficientList, coefficientDisplayList, lengthTypeList, TIME_ZONE, TIME_FORMAT, LANGUAGE } from './constant';
+import { coefficientList, coefficientDisplayList,
+   lengthTypeList, TIME_ZONE, TIME_FORMAT, LANGUAGE } from './constant';
 
 export const getTotalValue = (pcsList, lengthType) => {
     const reducer = (accumulator, currentValue, index) => ({
         pieces: accumulator.pieces + currentValue,
-        m3: accumulator.m3 + currentValue * coefficientList[lengthType][index]
+        m3: accumulator.m3 + (currentValue * coefficientList[lengthType][index])
     });
-    return pcsList.reduce(reducer, {pieces:0, m3:0});
+    return pcsList.reduce(reducer, { pieces: 0, m3: 0 });
 };
 
 export const getCurrentTime = (timeZone = TIME_ZONE, timeFormat = TIME_FORMAT) => {
@@ -14,27 +15,26 @@ export const getCurrentTime = (timeZone = TIME_ZONE, timeFormat = TIME_FORMAT) =
     return {
         date: temp[0],
         time: temp[1]
-    }
+    };
 };
 
 export const getStartEndTime = (startTime, endTime) => {
     return `${startTime.time || '00:00:00'}/${endTime.time || '00:00:00'}`;
 };
 
-export const generateHTML_Old = (props)=>{
-    
-    const {pcsList, lengthType, pieces,  
-        name, tare,  yard, m3,
+export const generateHTMLOld = (props) => {
+    const { pcsList, lengthType, pieces,  
+        name, tare, yard, m3,
         openTime, startTime } = props;
-    let temp = ''
-    for(let i=0; i<pcsList.length; i+=1) {
+    let temp = '';
+    for (let i = 0; i < pcsList.length; i += 1) {
         temp = `${temp}
         <tr>
-            <th bgcolor='#9df441'>${i+12}</th>
+            <th bgcolor='#9df441'>${i + 12}</th>
             <td>${pcsList[i]}</td>
             <td>${coefficientDisplayList[lengthType][i]}</td>
-        </tr>`
-    };
+        </tr>`;
+    }
         
     return `<html><head>
     <style>
@@ -99,20 +99,19 @@ export const generateHTML_Old = (props)=>{
     </html>`;
 };
 
-export const generateHTML = (props)=>{
-    
-  const {pcsList, lengthType, pieces,  
-      name, tare,  yard, m3,
+export const generateHTML = (props) => {
+  const { pcsList, lengthType, pieces,  
+      name, tare, yard, m3,
       openTime, startTime } = props;
-  let temp = ''
-  for(let i=0; i<pcsList.length; i+=1) {
+  let temp = '';
+  for (let i = 0; i < pcsList.length; i += 1) {
       temp = `${temp}
       <tr>
-          <th bgcolor='#a5f49c'>${i+12}</th>
+          <th bgcolor='#a5f49c'>${i + 12}</th>
           <td>${pcsList[i]}</td>
           <td>${coefficientDisplayList[lengthType][i]}</td>
-      </tr>`
-  };
+      </tr>`;
+  }
       
   return `<html><head>
   <style>
