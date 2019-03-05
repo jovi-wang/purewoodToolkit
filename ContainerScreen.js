@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
-import { PermissionsAndroid, Dimensions, 
-    ActivityIndicator, TouchableOpacity, StyleSheet, 
+import { Dimensions, StyleSheet, 
+    ActivityIndicator, TouchableOpacity,
     Text, View, FlatList, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 
 import PCSListItem from './components/PCSListItem';
 import * as actions from './action';
-import { coefficientDisplayList, CONTAINER, LANGUAGE, lengthTypeList } from './constant';
-// import { getStartEndTime } from './helper';
+import { coefficientDisplayList, LANGUAGE, lengthTypeList } from './constant';
 
 const totalWidth = Math.min(Dimensions.get('window').width, Dimensions.get('window').height) - 4;
 const cellWidthLeft = Math.floor(totalWidth * 0.23);
@@ -23,9 +22,6 @@ class ContainerScreen extends Component {
     constructor(props) {
         super(props);
         this.disable = false;
-        this.rotate = false;
-        PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE);
-        this.props.setTimeValue(CONTAINER.SET_OPEN_TIME);
     }
     componentWillMount() {
         this.createDataSource(this.props);
@@ -35,16 +31,14 @@ class ContainerScreen extends Component {
     }
     
     // events handler
-    onResetExport = () => {
-        if (this.disable) return;
-        this.disable = true;
-        const { name } = this.props;
-        if (!name) {
-            this.props.displayError(LANGUAGE.ENTER_CONTAINER_NAME_FIRST);
-        } else {
-            this.props.resetExport(this.props);
-        }
-        setTimeout(() => { this.disable = false; }, preventTappingDelay);
+    // onResetExport = () => {
+    //     if (this.disable) return;
+    //     this.disable = true;
+    //     this.props.resetExport(this.props);
+    //     setTimeout(() => { this.disable = false; }, preventTappingDelay);
+    // };
+    onResetPress = () => {
+        this.props.resetAll();
     };
     onChangeLengthType = (typeValue) => {
         this.props.changeLengthType(typeValue);
@@ -64,7 +58,7 @@ class ContainerScreen extends Component {
     }
     createDataSource({ pcsList, lengthType }) {
         this.dataSource = pcsList.map((element, index) => ({
-            id: String(index + 12),
+            id: String(index + 10),
             index,
             pcs: element,
             coefficient: coefficientDisplayList[lengthType][index]
@@ -121,7 +115,7 @@ class ContainerScreen extends Component {
                 <View style={{ flex: 1 }} />
                 <TouchableOpacity
                     disabled={this.disable}
-                    onPress={this.onResetExport}
+                    onPress={this.onResetPress}
                 >
                     <Text
                         style={{
@@ -132,7 +126,7 @@ class ContainerScreen extends Component {
                         borderColor: 'black',
                         borderRadius: 5
                     }}
-                    >{LANGUAGE.EXPORT_AND_RESET}</Text>
+                    >{LANGUAGE.RESET_ALL}</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -256,7 +250,7 @@ class ContainerScreen extends Component {
             <View>
                 {this.renderErrorDialog()}
                 {this.renderLengthTypePicker()}
-                <ScrollView horizontal>
+                <ScrollView>
                     <FlatList
                         ListHeaderComponent={this.renderStickyHeader()}
                         ListFooterComponent={this.renderFooterButton()}
@@ -302,13 +296,7 @@ const mapStateToProps = state => {
         pcsList: state.container.pcsList,
         lengthType: state.container.lengthType,
         pieces: state.container.pieces,
-        m3: state.container.m3,
-        name: state.container.name,
-        tare: state.container.tare,
-        yard: state.container.yard,
-        openTime: state.container.openTime,
-        startTime: state.container.startTime,
-        endTime: state.container.endTime
+        m3: state.container.m3
     };
 };
 

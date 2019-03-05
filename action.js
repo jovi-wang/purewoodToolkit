@@ -1,19 +1,19 @@
 
-import RNFS from 'react-native-fs';
-import RNHTMLtoPDF from 'react-native-html-to-pdf';
+// import RNFS from 'react-native-fs';
+// import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
-import { COMMON, CONTAINER, LANGUAGE } from './constant';
-import { getCurrentTime, generateHTML } from './helper';
+import { COMMON, CONTAINER } from './constant';
+// import { getCurrentTime } from './helper';
 
-const DownloadFolder = `${RNFS.ExternalStorageDirectoryPath}/Download`;
+// const DownloadFolder = `${RNFS.ExternalStorageDirectoryPath}/Download`;
 
 // Container action functions
-export const changeTextInputValue = (inputName, value) => {
-  return {
-    type: inputName,
-    payload: value
-  };
-};
+// export const changeTextInputValue = (inputName, value) => {
+//   return {
+//     type: inputName,
+//     payload: value
+//   };
+// };
 
 export const changePCSValue = (index, value) => {
     return {
@@ -28,12 +28,14 @@ export const changeLengthType = (type) => {
         payload: type
     };
 };
+/*
 export const setTimeValue = (timeType) => {
   return {
     type: timeType,
     payload: getCurrentTime()
   };
 };
+*/
 
 // Common action functions
 export const displayError = errorMessage => {
@@ -76,6 +78,7 @@ export const resetAll = () => {
   };
 };
 // Async actions
+/*
 export const resetExport = (props) => {
   const { name, openTime } = props;
   return async (dispatch) => {
@@ -108,4 +111,4 @@ export const resetExport = (props) => {
     }
   };
 };
-
+*/

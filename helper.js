@@ -1,7 +1,7 @@
-import moment from 'moment-timezone';
-import { coefficientList, coefficientDisplayList,
-   lengthTypeList, TIME_ZONE, TIME_FORMAT, LANGUAGE } from './constant';
+// import moment from 'moment-timezone';
+import { coefficientList } from './constant';
 
+// generate new pieces and m3 value
 export const getTotalValue = (pcsList, lengthType) => {
     const reducer = (accumulator, currentValue, index) => ({
         pieces: accumulator.pieces + currentValue,
@@ -9,7 +9,8 @@ export const getTotalValue = (pcsList, lengthType) => {
     });
     return pcsList.reduce(reducer, { pieces: 0, m3: 0 });
 };
-
+/*
+//get date and time based on format and timezone
 export const getCurrentTime = (timeZone = TIME_ZONE, timeFormat = TIME_FORMAT) => {
     const temp = moment().tz(timeZone).format(timeFormat).split('-');
     return {
@@ -18,6 +19,7 @@ export const getCurrentTime = (timeZone = TIME_ZONE, timeFormat = TIME_FORMAT) =
     };
 };
 
+// get start/end time string
 export const getStartEndTime = (startTime, endTime) => {
     return `${startTime.time || '00:00:00'}/${endTime.time || '00:00:00'}`;
 };
@@ -98,7 +100,7 @@ export const generateHTMLOld = (props) => {
     </body>
     </html>`;
 };
-
+//generate HTML string and prepare to write to pdf file
 export const generateHTML = (props) => {
   const { pcsList, lengthType, pieces,  
       name, tare, yard, m3,
@@ -166,3 +168,4 @@ export const generateHTML = (props) => {
   </body>
   </html>`;
 };
+*/

@@ -11,8 +11,8 @@ const reducers = combineReducers({
     common: commonReducer,
     container: containerReducer
 });
-// const store = createStore(reducers, {}, applyMiddleware(thunk, logger));
-const store = createStore(reducers, {}, applyMiddleware(thunk));
+const store = createStore(reducers, {}, applyMiddleware(thunk, logger));
+// const store = createStore(reducers, {}, applyMiddleware(thunk));
 
  
 export default class App extends Component {

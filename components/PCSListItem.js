@@ -3,7 +3,7 @@ import { TextInput, Text, Dimensions, TouchableOpacity, View, StyleSheet } from 
 import { connect } from 'react-redux';
 
 import * as actions from '../action';
-import { pcsValueLimit, LANGUAGE, CONTAINER } from '../constant';
+import { pcsValueLimit, LANGUAGE } from '../constant';
 
 const totalWidth = Math.min(Dimensions.get('window').width, Dimensions.get('window').height) - 4;
 const buttonWidth = Math.floor(totalWidth * 0.12);
@@ -15,12 +15,9 @@ const borderWidthValue = 2;
 const fontSizeValue = 22;
 
 class PCSListItem extends Component {
-    // constructor(props) {
-    //     super(props);
-    //     width = Math.max(Dimensions.get('window').width, Dimensions.get('window').height);
-    // }
+
     onPressAdd = () => {
-        const { lengthType, pcs, startTime, index } = this.props;
+        const { lengthType, pcs, index } = this.props;
         // only dispatch when lengthType has been set properly
         if (lengthType === 0) {
             this.props.displayError(LANGUAGE.SELECT_LENGTH_FIRST);
@@ -28,9 +25,6 @@ class PCSListItem extends Component {
         }
         // do not dispatch new actions if the pcs value is already max value
         if (pcs < pcsValueLimit.MAX) {
-            if (!startTime) {
-                this.props.setTimeValue(CONTAINER.SET_START_TIME);
-            }
             this.props.changePCSValue(index, 1);
         }
     }
@@ -130,7 +124,6 @@ const mapStateToProps = (state, props) => {
         error: state.common.error,
         loading: state.common.loading,
         lengthType: state.container.lengthType,
-        startTime: state.container.startTime,
         id: props.value.id,
         coefficient: props.value.coefficient,
         pcs: props.value.pcs,
