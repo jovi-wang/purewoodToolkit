@@ -241,7 +241,10 @@ class ContainerScreen extends Component {
             <View>
                 {this.renderErrorDialog()}
                 {this.renderLengthTypePicker()}
-                <ScrollView>
+                {/*
+                    horizontal must be set to enable stickyHeaderIndices
+                 */}
+                <ScrollView horizontal>
                     <FlatList
                         ListHeaderComponent={this.renderStickyHeader()}
                         ListFooterComponent={this.renderFooterButton()}
