@@ -2,7 +2,7 @@ import { COMMON, CONTAINER, diameterLength } from './constant';
 import { getTotalValue } from './helper';
 
 const commonInitialState = {
-  loading: false,
+  // loading: false,
   error: '',
   showPicker: false
 };
@@ -21,7 +21,7 @@ const containerInitialState = {
 };
 
 export const commonReducer = (state = commonInitialState, action) => {
-  const { DISPLAY_ERROR, CLEAR_ERROR, DISPLAY_LOADING, CLEAR_LOADING, DISPLAY_PICKER_DIALOG, CLEAR_PICKER_DIALOG, RESET_ALL } = COMMON;
+  const { DISPLAY_ERROR, CLEAR_ERROR, DISPLAY_PICKER_DIALOG, CLEAR_PICKER_DIALOG, RESET_ALL } = COMMON;
   switch (action.type) {
     case DISPLAY_ERROR:
       return {
@@ -33,16 +33,16 @@ export const commonReducer = (state = commonInitialState, action) => {
         ...state,
         error: ''
       };
-    case DISPLAY_LOADING:
-      return {
-        ...state,
-        loading: true
-      };
-    case CLEAR_LOADING:
-      return {
-        ...state,
-        loading: false
-      };
+    // case DISPLAY_LOADING:
+    //   return {
+    //     ...state,
+    //     loading: true
+    //   };
+    // case CLEAR_LOADING:
+    //   return {
+    //     ...state,
+    //     loading: false
+    //   };
     case DISPLAY_PICKER_DIALOG:
       return {
         ...state,

@@ -39,10 +39,21 @@ class PCSListItem extends Component {
             this.props.changePCSValue(index, -1);
         }
     }
-    onChangePCSInputValue = (text) => {
-        console.log(text);
-        console.log(this.props.index);
-        // this.props.changePCSValue(inputName, value);
+    // change pcs value in textInput
+    onChangePCSInputValue = (value) => {
+        const temp = Number(value);
+        // if input is invalid, do not change value
+        if (Number.isNaN(temp)) return;
+
+        const { lengthType, pcs, index } = this.props;
+        if (lengthType === 0) {
+            this.props.displayError(LANGUAGE.SELECT_LENGTH_FIRST);
+            return;
+        }
+        // only change PCS value if value is inside limit range
+        if (temp >= pcsValueLimit.MIN && temp <= pcsValueLimit.MAX) {
+            this.props.changePCSValue(index, temp - pcs);
+        }
     }
     render() {
         return (
@@ -93,6 +104,7 @@ class PCSListItem extends Component {
                         }}
                             onChangeText={(text) => this.onChangePCSInputValue(text)}
                             value={String(this.props.pcs)}
+                            keyboardType='number-pad'
                         />
                         <TouchableOpacity 
                             style={{ backgroundColor: '#f4fc8a' }} 
@@ -122,7 +134,6 @@ class PCSListItem extends Component {
 const mapStateToProps = (state, props) => {
     return {
         error: state.common.error,
-        loading: state.common.loading,
         lengthType: state.container.lengthType,
         id: props.value.id,
         coefficient: props.value.coefficient,

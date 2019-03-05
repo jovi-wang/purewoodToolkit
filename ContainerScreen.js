@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, 
-    ActivityIndicator, TouchableOpacity,
-    Text, View, FlatList, ScrollView } from 'react-native';
+import { Dimensions, StyleSheet, TouchableOpacity,
+        Text, View, FlatList, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 
@@ -17,6 +16,7 @@ const cellHeight = 28;
 const borderWidthValue = 2;
 const fontSizeValue = 15;
 const preventTappingDelay = 300;
+const diameterOffset = 10;
 
 class ContainerScreen extends Component {
     constructor(props) {
@@ -29,36 +29,32 @@ class ContainerScreen extends Component {
     componentWillReceiveProps(nextProps) {
         this.createDataSource(nextProps);
     }
-    
-    // events handler
-    // onResetExport = () => {
-    //     if (this.disable) return;
-    //     this.disable = true;
-    //     this.props.resetExport(this.props);
-    //     setTimeout(() => { this.disable = false; }, preventTappingDelay);
-    // };
     onResetPress = () => {
         this.props.resetAll();
     };
     onChangeLengthType = (typeValue) => {
+        if (this.disable) return;
+        this.disable = true;
         this.props.changeLengthType(typeValue);
         this.props.clearLengthTypePicker();
+        setTimeout(() => {
+            this.disable = false;
+        }, preventTappingDelay);
     }
-    // onChangeTextInputValue = (inputName, value) => {
-    //     this.props.changeTextInputValue(inputName, value);
-    // }
     onClearErrorMessage = () => {
         this.props.clearError();
     }
-    displayLengthTypePicker = () => {
+    onPressLengthTypePicker = () => {
         if (this.disable) return;
         this.disable = true;
         this.props.displayLengthTypePicker();
-        setTimeout(() => { this.disable = false; }, preventTappingDelay);
+        setTimeout(() => {
+            this.disable = false;
+        }, preventTappingDelay);
     }
     createDataSource({ pcsList, lengthType }) {
         this.dataSource = pcsList.map((element, index) => ({
-            id: String(index + 10),
+            id: String(index + diameterOffset),
             index,
             pcs: element,
             coefficient: coefficientDisplayList[lengthType][index]
@@ -95,21 +91,21 @@ class ContainerScreen extends Component {
         );
     }
     renderFooterButton() {
-        if (this.props.loading) {
-            return (
-                <View
-                    style={{ flex: 1,
-                    flexDirection: 'row', 
-                    height: cellHeight * 1.5,
-                    padding: 3 }}
-                >
-                    <View style={{ flex: 1 }} />
-                    <View style={{ width: totalWidth / 2, justifyContent: 'center' }}>
-                        <ActivityIndicator size='large' />
-                    </View>
-                </View>
-            );
-        }
+        // if (this.props.loading) {
+        //     return (
+        //         <View
+        //             style={{ flex: 1,
+        //             flexDirection: 'row', 
+        //             height: cellHeight * 1.5,
+        //             padding: 3 }}
+        //         >
+        //             <View style={{ flex: 1 }} />
+        //             <View style={{ width: totalWidth / 2, justifyContent: 'center' }}>
+        //                 <ActivityIndicator size='large' />
+        //             </View>
+        //         </View>
+        //     );
+        // }
         return (
             <View style={{ flex: 1, flexDirection: 'row', height: cellHeight * 1.5, padding: 3 }}>
                 <View style={{ flex: 1 }} />
@@ -150,7 +146,7 @@ class ContainerScreen extends Component {
                         width: cellWidthLeft
                     }}
                         disabled={this.disable}
-                        onPress={this.displayLengthTypePicker}
+                        onPress={this.onPressLengthTypePicker}
                     >{lengthType ? lengthTypeList[lengthType] : LANGUAGE.LENGTH_PLACEHOLDER}</Text>
                 </View>
                 <View
@@ -163,11 +159,6 @@ class ContainerScreen extends Component {
                     backgroundColor: '#fcea99'
                 }}
                 >
-                    {/* <Text style={{
-                        ...styles.normalText, 
-                        ...styles.borderRight,
-                        width: cellWidth, fontWeight: 'bold'
-                    }}>{LANGUAGE.TOTAL}</Text> */}
                     <View style={{ flexDirection: 'column' }}>
                         <Text
                             style={{
@@ -291,7 +282,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
     return {
         error: state.common.error,
-        loading: state.common.loading,
+        // loading: state.common.loading,
         showPicker: state.common.showPicker,
         pcsList: state.container.pcsList,
         lengthType: state.container.lengthType,

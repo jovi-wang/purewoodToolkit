@@ -49,7 +49,7 @@ export const clearError = () => {
     type: COMMON.CLEAR_ERROR
   };
 };
-
+/*
 export const displayLoading = () => {
   return {
     type: COMMON.DISPLAY_LOADING 
@@ -60,7 +60,7 @@ export const clearLoading = () => {
     type: COMMON.CLEAR_LOADING 
   };
 };
-
+*/
 export const displayLengthTypePicker = () => {
   return {
     type: COMMON.DISPLAY_PICKER_DIALOG 
