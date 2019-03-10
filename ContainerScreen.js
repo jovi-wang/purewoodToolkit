@@ -37,6 +37,33 @@ class ContainerScreen extends Component {
     componentWillReceiveProps(nextProps) {
         this.createDataSource(nextProps);
     }
+
+    onResetPress = () => {
+        this.preventDoubleTapHelper(this.props.resetAll);
+    };
+    onChangeLengthType = (typeValue) => {
+        const callback = (value) => {
+            this.props.changeLengthType(value);
+            this.props.clearLengthTypePicker();
+        };
+        this.preventDoubleTapHelper(callback, typeValue);
+    }
+    onClearErrorMessage = () => {
+        this.props.clearError();
+    }
+    onPressLengthTypePicker = () => {
+        this.preventDoubleTapHelper(this.props.displayLengthTypePicker);
+    }
+    onNext = (currentIndex) => {
+        const nextIndex = Number(currentIndex) + 1;
+        const currentRef = this.textInputRefList[currentIndex];
+        const nextRef = this.textInputRefList[nextIndex];
+        if (nextRef && nextRef.focus) {
+            nextRef.focus();
+        } else if (currentRef.blur) {
+            currentRef.blur();
+        }
+    }
     preventDoubleTapHelper(callback, props) {
         if (this.disable) return;
         this.disable = true;
@@ -45,25 +72,6 @@ class ContainerScreen extends Component {
             this.disable = false;
         }, preventTappingDelay);
     }
-    onResetPress = () => {
-        this.preventDoubleTapHelper(this.props.resetAll);
-    };
-    onChangeLengthType = (typeValue) => {
-        const callback = (value) => {
-            this.props.changeLengthType(value);
-            this.props.clearLengthTypePicker();
-        }
-        this.preventDoubleTapHelper(callback, typeValue);
-
-    }
-    onClearErrorMessage = () => {
-        this.props.clearError();
-    }
-    onPressLengthTypePicker = () => {
-        this.preventDoubleTapHelper(this.props.displayLengthTypePicker);
-    }
-
-
     createDataSource({ pcsList, lengthType }) {
         this.dataSource = pcsList.map((element, index) => ({
             id: String(index + diameterOffset),
