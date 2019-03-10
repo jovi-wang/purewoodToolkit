@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { Dimensions, StyleSheet, TouchableOpacity,
-        Text, View, FlatList, ScrollView } from 'react-native';
+import {
+    Dimensions, StyleSheet, TouchableOpacity,
+    Text, View, FlatList, ScrollView
+} from 'react-native';
 import { connect } from 'react-redux';
 import Dialog from 'react-native-dialog';
 
@@ -22,6 +24,11 @@ class ContainerScreen extends Component {
     constructor(props) {
         super(props);
         this.disable = false;
+        // this object array is used for getting individual textInput reference, to move focus to next input
+        // the idea is in parent method, pass 2 callback functions
+        // first is getRef (get all item's textInput ref)
+        // second is onNext (use the textInput reference and call focus to move the cursor focus)
+        this.textInputRefList = [];
     }
     componentWillMount() {
         this.createDataSource(this.props);
@@ -52,6 +59,16 @@ class ContainerScreen extends Component {
             this.disable = false;
         }, preventTappingDelay);
     }
+    onNext = (currentIndex) => {
+        const nextIndex = Number(currentIndex) + 1;
+        const currentRef = this.textInputRefList[currentIndex];
+        const nextRef = this.textInputRefList[nextIndex];
+        if (nextRef && nextRef.focus) {
+            nextRef.focus();
+        } else if (currentRef.blur) {
+            currentRef.blur();
+        }
+    }
     createDataSource({ pcsList, lengthType }) {
         this.dataSource = pcsList.map((element, index) => ({
             id: String(index + diameterOffset),
@@ -74,7 +91,7 @@ class ContainerScreen extends Component {
             if (index > 0) {
                 return (
                     <Dialog.Description
-                        key={index} 
+                        key={index}
                         onPress={() => this.onChangeLengthType(index)}
                     >{value}</Dialog.Description>
                 );
@@ -91,21 +108,6 @@ class ContainerScreen extends Component {
         );
     }
     renderFooterButton() {
-        // if (this.props.loading) {
-        //     return (
-        //         <View
-        //             style={{ flex: 1,
-        //             flexDirection: 'row', 
-        //             height: cellHeight * 1.5,
-        //             padding: 3 }}
-        //         >
-        //             <View style={{ flex: 1 }} />
-        //             <View style={{ width: totalWidth / 2, justifyContent: 'center' }}>
-        //                 <ActivityIndicator size='large' />
-        //             </View>
-        //         </View>
-        //     );
-        // }
         return (
             <View style={{ flex: 1, flexDirection: 'row', height: cellHeight * 1.5, padding: 3 }}>
                 <View style={{ flex: 1 }} />
@@ -115,13 +117,13 @@ class ContainerScreen extends Component {
                 >
                     <Text
                         style={{
-                        ...styles.normalText,
-                        width: totalWidth / 2,
-                        fontSize: styles.normalText.fontSize + 8,
-                        borderWidth: 1,
-                        borderColor: 'black',
-                        borderRadius: 5
-                    }}
+                            ...styles.normalText,
+                            width: totalWidth / 2,
+                            fontSize: styles.normalText.fontSize + 8,
+                            borderWidth: 1,
+                            borderColor: 'black',
+                            borderRadius: 5
+                        }}
                     >{LANGUAGE.RESET_ALL}</Text>
                 </TouchableOpacity>
             </View>
@@ -133,101 +135,101 @@ class ContainerScreen extends Component {
             <View style={{ paddingTop: 2, paddingHorizontal: 2, backgroundColor: 'white' }}>
                 <View
                     style={{
-                    width: totalWidth,
-                    height: cellHeight,
-                    flexDirection: 'row',
-                    ...styles.borderAll
-                }}
+                        width: totalWidth,
+                        height: cellHeight,
+                        flexDirection: 'row',
+                        ...styles.borderAll
+                    }}
                 >
                     <Text
                         style={{
-                        ...styles.normalText,
-                        flex: 1,
-                        width: cellWidthLeft
-                    }}
+                            ...styles.normalText,
+                            flex: 1,
+                            width: cellWidthLeft
+                        }}
                         disabled={this.disable}
                         onPress={this.onPressLengthTypePicker}
                     >{lengthType ? lengthTypeList[lengthType] : LANGUAGE.LENGTH_PLACEHOLDER}</Text>
                 </View>
                 <View
                     style={{
-                    width: totalWidth,
-                    height: cellHeight * 2,
-                    flexDirection: 'row',
-                    ...styles.borderHorizontal,
-                    ...styles.borderBottom,
-                    backgroundColor: '#fcea99'
-                }}
+                        width: totalWidth,
+                        height: cellHeight * 2,
+                        flexDirection: 'row',
+                        ...styles.borderHorizontal,
+                        ...styles.borderBottom,
+                        backgroundColor: '#fcea99'
+                    }}
                 >
                     <View style={{ flexDirection: 'column' }}>
                         <Text
                             style={{
-                            height: cellHeight,
-                            fontWeight: 'bold',
-                            ...styles.normalText,
-                            width: cellWidthLeft,
-                            ...styles.borderRight,
-                            ...styles.borderBottom
-                        }}
+                                height: cellHeight,
+                                fontWeight: 'bold',
+                                ...styles.normalText,
+                                width: cellWidthLeft,
+                                ...styles.borderRight,
+                                ...styles.borderBottom
+                            }}
                         >{LANGUAGE.TOTAL_PIECES}</Text>
                         <Text
                             style={{
-                            height: cellHeight,
-                            fontWeight: 'bold',
-                            ...styles.normalText,
-                            width: cellWidthLeft,
-                            ...styles.borderRight,
-                            ...styles.borderBottom
-                        }}
+                                height: cellHeight,
+                                fontWeight: 'bold',
+                                ...styles.normalText,
+                                width: cellWidthLeft,
+                                ...styles.borderRight,
+                                ...styles.borderBottom
+                            }}
                         >{LANGUAGE.TOTAL_M3}</Text>
                     </View>
                     <View style={{ flexDirection: 'column', flex: 1 }}>
                         <Text
                             style={{
-                            height: cellHeight,
-                            ...styles.normalText,
-                            ...styles.borderBottom
-                        }}
+                                height: cellHeight,
+                                ...styles.normalText,
+                                ...styles.borderBottom
+                            }}
                         >{pieces}</Text>
                         <Text
                             style={{
-                            height: cellHeight,
-                            ...styles.normalText,
-                            ...styles.borderBottom
-                        }}
+                                height: cellHeight,
+                                ...styles.normalText,
+                                ...styles.borderBottom
+                            }}
                         >{m3}</Text>
                     </View>
                 </View>
                 <View
-                style={{
-                width: totalWidth,
-                height: cellHeight,
-                flexDirection: 'row',
-                ...styles.borderHorizontal,
-                ...styles.borderBottom,
-                backgroundColor: '#a5f49c'
-                }}
+                    style={{
+                        width: totalWidth,
+                        height: cellHeight,
+                        flexDirection: 'row',
+                        ...styles.borderHorizontal,
+                        ...styles.borderBottom,
+                        backgroundColor: '#a5f49c'
+                    }}
                 >
                     <Text
                         style={{
                             ...styles.normalText,
-                        width: cellWidthLeft,
+                            width: cellWidthLeft,
                             ...styles.borderRight,
-                        fontWeight: 'bold'
+                            fontWeight: 'bold'
                         }}
                     >{LANGUAGE.DIAMETER}</Text>
                     <Text
                         style={{
                             ...styles.normalText,
-                        width: cellWidthMiddle,
+                            width: cellWidthMiddle,
                             ...styles.borderRight,
-                        fontWeight: 'bold'
+                            fontWeight: 'bold'
                         }}
                     >{LANGUAGE.PCS}</Text>
                     <Text
                         style={{
-                        ...styles.normalText, width: cellWidthRight, fontWeight: 'bold'
-                    }}
+                            ...styles.normalText, width: cellWidthRight, fontWeight: 'bold'
+                        }}
                     >{LANGUAGE.COEFFICIENT}</Text>
                 </View>
             </View>
@@ -252,7 +254,12 @@ class ContainerScreen extends Component {
                         data={this.dataSource}
                         keyExtractor={(item) => item.id}
                         extraData={pcsList}
-                        renderItem={({ item }) => <PCSListItem value={item} />}
+                        renderItem={({ item }) =>
+                            <PCSListItem
+                                value={item}
+                                onNext={(id) => this.onNext(id)}
+                                getRef={(ref, id) => { this.textInputRefList[id] = ref; }}
+                            />}
                     />
                 </ScrollView>
 

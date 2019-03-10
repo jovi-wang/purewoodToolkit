@@ -55,90 +55,104 @@ class PCSListItem extends Component {
             this.props.changePCSValue(index, temp - pcs);
         }
     }
+    onNextPress = () => {
+        /*
+        to achieve a feature that when press 'enter', 
+        move to next textInput and do not dismiss keyboard
+        */
+        this.props.onNext(this.props.id);
+    }
     render() {
         return (
             <View style={{ flexDirection: 'row', paddingHorizontal: 2 }}>
                 <View
                     style={{
-                    width: totalWidth,
-                    height: cellHeight,
-                    flexDirection: 'row',
-                    ...styles.borderHorizontal,
-                    ...styles.borderBottom
-                }}
+                        width: totalWidth,
+                        height: cellHeight,
+                        flexDirection: 'row',
+                        ...styles.borderHorizontal,
+                        ...styles.borderBottom
+                    }}
                 >
                     <Text
-                    style={{
-                    ...styles.normalText,
-                    width: cellWidthLeft,
-                    ...styles.borderRight,
-                    fontWeight: 'bold',
-                    backgroundColor: '#a5f49c'
-                    }}
+                        style={{
+                            ...styles.normalText,
+                            width: cellWidthLeft,
+                            ...styles.borderRight,
+                            fontWeight: 'bold',
+                            backgroundColor: '#a5f49c'
+                        }}
                     >{this.props.id}</Text>
                     <View
                         style={{
-                        ...styles.borderRight,
-                        justifyContent: 'space-between',
-                        flexDirection: 'row',
-                        width: cellWidthMiddle
-                    }}
+                            ...styles.borderRight,
+                            justifyContent: 'space-between',
+                            flexDirection: 'row',
+                            width: cellWidthMiddle
+                        }}
                     >
-                        <TouchableOpacity 
-                            style={{ backgroundColor: '#f4fc8a' }} 
+                        <TouchableOpacity
+                            style={{ backgroundColor: '#f4fc8a' }}
                             onPress={this.onPressMinus}
                         >
                             <Text
                                 style={{
-                                ...styles.normalText,
-                                fontSize: 26,
-                                width: buttonWidth,
-                                fontWeight: 'bold',
-                                color: 'red',
-                            }}
+                                    ...styles.normalText,
+                                    fontSize: 26,
+                                    width: buttonWidth,
+                                    fontWeight: 'bold',
+                                    color: 'red',
+                                }}
                             >{'−'}</Text>
                         </TouchableOpacity>
                         <TextInput
                             style={{
-                            ...styles.normalText, flex: 1, padding: 0
-                        }}
+                                ...styles.normalText, flex: 1, padding: 0
+                            }}
                             onChangeText={(text) => this.onChangePCSInputValue(text)}
                             value={String(this.props.pcs)}
-                            keyboardType='number-pad'
+                            ref={(ref) => this.props.getRef(ref, this.props.id)}
+                            returnKeyType='next'
+                            keyboardType='numeric'
+                            blurOnSubmit={false}
+                            onSubmitEditing={this.onNextPress}
+
                         />
-                        <TouchableOpacity 
-                            style={{ backgroundColor: '#f4fc8a' }} 
+                        <TouchableOpacity
+                            style={{ backgroundColor: '#f4fc8a' }}
                             onPress={this.onPressAdd}
                         >
                             <Text
                                 style={{
-                                ...styles.normalText,
-                                fontSize: 26,
-                                width: buttonWidth,
-                                fontWeight: 'bold',
-                                color: 'red'
-                            }}
+                                    ...styles.normalText,
+                                    fontSize: 26,
+                                    width: buttonWidth,
+                                    fontWeight: 'bold',
+                                    color: 'red'
+                                }}
                             >{'+'}</Text>
                         </TouchableOpacity>
                     </View>
                     <Text
                         style={{
-                        ...styles.normalText, width: cellWidthRight
-                    }}
+                            ...styles.normalText, width: cellWidthRight
+                        }}
                     >{this.props.coefficient > 0 ? this.props.coefficient : ''}</Text>
                 </View>
             </View>
         );
     }
 }
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state, ownProps) => {
     return {
         error: state.common.error,
         lengthType: state.container.lengthType,
-        id: props.value.id,
-        coefficient: props.value.coefficient,
-        pcs: props.value.pcs,
-        index: props.value.index
+        id: ownProps.value.id,
+        coefficient: ownProps.value.coefficient,
+        pcs: ownProps.value.pcs,
+        index: ownProps.value.index,
+        onNext: ownProps.onNext,
+        getRef: ownProps.getRef
     };
 };
 

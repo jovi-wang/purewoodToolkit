@@ -8,19 +8,22 @@ import ContainerScreen from './ContainerScreen';
 import { commonReducer, containerReducer } from './reducers';
 
 const reducers = combineReducers({
-    common: commonReducer,
-    container: containerReducer
+  common: commonReducer,
+  container: containerReducer
 });
-const store = createStore(reducers, {}, applyMiddleware(thunk, logger));
-// const store = createStore(reducers, {}, applyMiddleware(thunk));
+let store;
+if (__DEV__ === true) {
+  store = createStore(reducers, {}, applyMiddleware(thunk, logger));
+} else {
+  store = createStore(reducers, {}, applyMiddleware(thunk));
+}
 
- 
 export default class App extends Component {
   render() {
-   return (
-        <Provider store={store}>
-            <ContainerScreen />
-        </Provider>
+    return (
+      <Provider store={store}>
+        <ContainerScreen />
+      </Provider>
     );
   }
 }
