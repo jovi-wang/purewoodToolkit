@@ -30,50 +30,40 @@ class ContainerScreen extends Component {
         // second is onNext (use the textInput reference and call focus to move the cursor focus)
         this.textInputRefList = [];
     }
+
     componentWillMount() {
         this.createDataSource(this.props);
     }
     componentWillReceiveProps(nextProps) {
         this.createDataSource(nextProps);
     }
-    onResetPress = () => {
+    preventDoubleTapHelper(callback, props) {
         if (this.disable) return;
         this.disable = true;
-        this.props.resetAll();
+        callback(props);
         setTimeout(() => {
             this.disable = false;
         }, preventTappingDelay);
+    }
+    onResetPress = () => {
+        this.preventDoubleTapHelper(this.props.resetAll);
     };
     onChangeLengthType = (typeValue) => {
-        if (this.disable) return;
-        this.disable = true;
-        this.props.changeLengthType(typeValue);
-        this.props.clearLengthTypePicker();
-        setTimeout(() => {
-            this.disable = false;
-        }, preventTappingDelay);
+        const callback = (value) => {
+            this.props.changeLengthType(value);
+            this.props.clearLengthTypePicker();
+        }
+        this.preventDoubleTapHelper(callback, typeValue);
+
     }
     onClearErrorMessage = () => {
         this.props.clearError();
     }
     onPressLengthTypePicker = () => {
-        if (this.disable) return;
-        this.disable = true;
-        this.props.displayLengthTypePicker();
-        setTimeout(() => {
-            this.disable = false;
-        }, preventTappingDelay);
+        this.preventDoubleTapHelper(this.props.displayLengthTypePicker);
     }
-    onNext = (currentIndex) => {
-        const nextIndex = Number(currentIndex) + 1;
-        const currentRef = this.textInputRefList[currentIndex];
-        const nextRef = this.textInputRefList[nextIndex];
-        if (nextRef && nextRef.focus) {
-            nextRef.focus();
-        } else if (currentRef.blur) {
-            currentRef.blur();
-        }
-    }
+
+
     createDataSource({ pcsList, lengthType }) {
         this.dataSource = pcsList.map((element, index) => ({
             id: String(index + diameterOffset),
