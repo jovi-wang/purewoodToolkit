@@ -14,7 +14,7 @@ const containerInitialState = {
   // endTime: '',
   // yard: '',
   // tare: '',
-  lengthType: 1,
+  lengthType: 0,
   pieces: 0,
   m3: 0,
   pcsList: new Array(diameterLength).fill(0)

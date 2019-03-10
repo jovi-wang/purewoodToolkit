@@ -37,7 +37,12 @@ class ContainerScreen extends Component {
         this.createDataSource(nextProps);
     }
     onResetPress = () => {
+        if (this.disable) return;
+        this.disable = true;
         this.props.resetAll();
+        setTimeout(() => {
+            this.disable = false;
+        }, preventTappingDelay);
     };
     onChangeLengthType = (typeValue) => {
         if (this.disable) return;
@@ -112,7 +117,6 @@ class ContainerScreen extends Component {
             <View style={{ flex: 1, flexDirection: 'row', height: cellHeight * 1.5, padding: 3 }}>
                 <View style={{ flex: 1 }} />
                 <TouchableOpacity
-                    disabled={this.disable}
                     onPress={this.onResetPress}
                 >
                     <Text
@@ -147,7 +151,7 @@ class ContainerScreen extends Component {
                             flex: 1,
                             width: cellWidthLeft
                         }}
-                        disabled={this.disable}
+                        // disabled={this.disable}
                         onPress={this.onPressLengthTypePicker}
                     >{lengthType ? lengthTypeList[lengthType] : LANGUAGE.LENGTH_PLACEHOLDER}</Text>
                 </View>
