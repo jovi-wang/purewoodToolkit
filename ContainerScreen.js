@@ -29,13 +29,20 @@ class ContainerScreen extends Component {
         // first is getRef (get all item's textInput ref)
         // second is onNext (use the textInput reference and call focus to move the cursor focus)
         this.textInputRefList = [];
+        this.createDataSource(props);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.createDataSource(this.props);
     }
-    componentWillReceiveProps(nextProps) {
-        this.createDataSource(nextProps);
+
+    createDataSource({ pcsList, lengthType }) {
+        this.dataSource = pcsList.map((element, index) => ({
+            id: String(index + diameterOffset),
+            index,
+            pcs: element,
+            coefficient: coefficientDisplayList[lengthType][index]
+        }));
     }
 
     onResetPress = () => {
@@ -72,14 +79,7 @@ class ContainerScreen extends Component {
             this.disable = false;
         }, preventTappingDelay);
     }
-    createDataSource({ pcsList, lengthType }) {
-        this.dataSource = pcsList.map((element, index) => ({
-            id: String(index + diameterOffset),
-            index,
-            pcs: element,
-            coefficient: coefficientDisplayList[lengthType][index]
-        }));
-    }
+
     // render components
     renderErrorDialog() {
         return (
@@ -237,10 +237,16 @@ class ContainerScreen extends Component {
             </View>
         );
     }
-
+    renderItem = ({ item }) =>
+        <PCSListItem
+            value={item}
+            onNext={(id) => this.onNext(id)}
+            getRef={(ref, id) => { this.textInputRefList[id] = ref; }}
+        />
     render() {
         // scrollview keyboardShouldPersistTaps set to handler
         const { pcsList } = this.props;
+        this.createDataSource(this.props);
         return (
             <View>
                 {this.renderErrorDialog()}
@@ -256,12 +262,8 @@ class ContainerScreen extends Component {
                         data={this.dataSource}
                         keyExtractor={(item) => item.id}
                         extraData={pcsList}
-                        renderItem={({ item }) =>
-                            <PCSListItem
-                                value={item}
-                                onNext={(id) => this.onNext(id)}
-                                getRef={(ref, id) => { this.textInputRefList[id] = ref; }}
-                            />}
+                        renderItem={this.renderItem}
+                        initialNumToRender={25}
                     />
                 </ScrollView>
 
