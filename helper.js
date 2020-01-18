@@ -1,13 +1,13 @@
 // import moment from 'moment-timezone';
-import { coefficientList } from './constant';
+import {coefficientList} from './constant';
 
 // generate new pieces and m3 value
 export const getTotalValue = (pcsList, lengthType) => {
-    const reducer = (accumulator, currentValue, index) => ({
-        pieces: accumulator.pieces + currentValue,
-        m3: accumulator.m3 + (currentValue * coefficientList[lengthType][index])
-    });
-    return pcsList.reduce(reducer, { pieces: 0, m3: 0 });
+  const reducer = (accumulator, currentValue, index) => ({
+    pieces: accumulator.pieces + currentValue,
+    m3: accumulator.m3 + currentValue * coefficientList[lengthType][index],
+  });
+  return pcsList.reduce(reducer, {pieces: 0, m3: 0});
 };
 /*
 //get date and time based on format and timezone
@@ -25,7 +25,7 @@ export const getStartEndTime = (startTime, endTime) => {
 };
 
 export const generateHTMLOld = (props) => {
-    const { pcsList, lengthType, pieces,  
+    const { pcsList, lengthType, pieces,
         name, tare, yard, m3,
         openTime, startTime } = props;
     let temp = '';
@@ -37,7 +37,7 @@ export const generateHTMLOld = (props) => {
             <td>${coefficientDisplayList[lengthType][i]}</td>
         </tr>`;
     }
-        
+
     return `<html><head>
     <style>
     table {
@@ -102,7 +102,7 @@ export const generateHTMLOld = (props) => {
 };
 //generate HTML string and prepare to write to pdf file
 export const generateHTML = (props) => {
-  const { pcsList, lengthType, pieces,  
+  const { pcsList, lengthType, pieces,
       name, tare, yard, m3,
       openTime, startTime } = props;
   let temp = '';
@@ -114,7 +114,7 @@ export const generateHTML = (props) => {
           <td>${coefficientDisplayList[lengthType][i]}</td>
       </tr>`;
   }
-      
+
   return `<html><head>
   <style>
   table {

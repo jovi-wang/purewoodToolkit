@@ -1,80 +1,59 @@
-
-// import RNFS from 'react-native-fs';
-// import RNHTMLtoPDF from 'react-native-html-to-pdf';
-
-import { COMMON, CONTAINER } from './constant';
-// import { getCurrentTime } from './helper';
-
-// const DownloadFolder = `${RNFS.ExternalStorageDirectoryPath}/Download`;
-
-// Container action functions
-// export const changeTextInputValue = (inputName, value) => {
-//   return {
-//     type: inputName,
-//     payload: value
-//   };
-// };
+import {COMMON, CONTAINER} from './constant';
 
 export const changePCSValue = (index, value) => {
-    return {
-      type: CONTAINER.CHANGE_PCS,
-      payload: { index, value }
-    };
-};
-
-export const changeLengthType = (type) => {
-    return {
-        type: CONTAINER.CHANGE_LENGTH_TYPE,
-        payload: type
-    };
-};
-/*
-export const setTimeValue = (timeType) => {
   return {
-    type: timeType,
-    payload: getCurrentTime()
+    type: CONTAINER.CHANGE_PCS,
+    payload: {index, value},
   };
 };
-*/
 
+export const changeLengthType = type => {
+  return {
+    type: CONTAINER.CHANGE_LENGTH_TYPE,
+    payload: type,
+  };
+};
+export const changeOtherLengthInvoiceValue = text => {
+  return {
+    type: CONTAINER.CHANGE_OTHER_LENGTH_INVOICE_VALUE,
+    payload: text,
+  };
+};
 // Common action functions
 export const displayError = errorMessage => {
-    return {
-      type: COMMON.DISPLAY_ERROR,
-      payload: errorMessage
-    };
+  return {
+    type: COMMON.DISPLAY_ERROR,
+    payload: errorMessage,
+  };
 };
 export const clearError = () => {
   return {
-    type: COMMON.CLEAR_ERROR
+    type: COMMON.CLEAR_ERROR,
   };
 };
-/*
-export const displayLoading = () => {
-  return {
-    type: COMMON.DISPLAY_LOADING 
-  };
-};
-export const clearLoading = () => {
-  return {
-    type: COMMON.CLEAR_LOADING 
-  };
-};
-*/
 export const displayLengthTypePicker = () => {
   return {
-    type: COMMON.DISPLAY_PICKER_DIALOG 
+    type: COMMON.DISPLAY_PICKER_DIALOG,
   };
 };
 export const clearLengthTypePicker = () => {
   return {
-    type: COMMON.CLEAR_PICKER_DIALOG 
+    type: COMMON.CLEAR_PICKER_DIALOG,
   };
 };
-
+export const displayInvoiceInputDialog = () => {
+  return {
+    type: COMMON.DISPLAY_INVOICE_INPUT_DIALOG,
+  };
+};
+export const clearInvoiceInputDialog = () => {
+  return {
+    type: COMMON.CLEAR_INVOICE_INPUT_DIALOG,
+  };
+};
 export const resetAll = () => {
   return {
-    type: COMMON.RESET_ALL
+    type: COMMON.RESET_ALL,
   };
 };
 // Async actions
