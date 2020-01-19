@@ -56,38 +56,3 @@ export const resetAll = () => {
     type: COMMON.RESET_ALL,
   };
 };
-// Async actions
-/*
-export const resetExport = (props) => {
-  const { name, openTime } = props;
-  return async (dispatch) => {
-    try {
-      dispatch(displayLoading());
-      dispatch(setTimeValue(CONTAINER.SET_END_TIME));
-      const destinationFilePath = `${DownloadFolder}/${openTime.date}`;
-      if (!await RNFS.exists(destinationFilePath)) {
-        await RNFS.mkdir(destinationFilePath);
-      }
-      const result = await RNFS.readDir(destinationFilePath);
-      const fileList = result.filter(file => file.name.includes(name));
-      const version = fileList.length + 1;
-      const fileName = version > 1 ? `${destinationFilePath}/${name} version${version}.pdf` : `${destinationFilePath}/${name}.pdf`;
-      const options = {
-        html: generateHTML(props),
-        fileName: 'temp',
-        base64: true
-      };
-      const temp = await RNHTMLtoPDF.convert(options);
-      await RNFS.writeFile(fileName, temp.base64, 'base64');
-              // clear cache file in /data/user/0/com.purewoodtoolkit/cache
-      await RNFS.unlink(temp.filePath);
-      dispatch(resetAll());
-      dispatch(setTimeValue(CONTAINER.SET_OPEN_TIME));
-    } catch (err) {
-      console.log('error in export action', err);
-      dispatch(clearLoading());
-      dispatch(displayError(LANGUAGE.INTERNAL_ERROR));
-    }
-  };
-};
-*/

@@ -1,7 +1,7 @@
 import {Dimensions, StyleSheet} from 'react-native';
 
 const totalWidth =
-  Math.min(Dimensions.get('window').width, Dimensions.get('window').height) - 4;
+  Math.min(Dimensions.get('window').width, Dimensions.get('window').height) - 6;
 const buttonWidth = Math.floor(totalWidth * 0.12);
 
 const borderWidthValue = 2;
@@ -20,6 +20,9 @@ export default fontSizeValue => {
     },
     flexOne: {
       flex: 1,
+    },
+    noPadding: {
+      padding: 0,
     },
     normalText: {
       textAlign: 'center',

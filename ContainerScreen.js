@@ -46,14 +46,20 @@ class ContainerScreen extends Component {
     this.preventDoubleTapHelper(this.props.resetAll);
   };
   onChangeLengthType = typeValue => {
+    const {
+      changeLengthType,
+      clearLengthTypePicker,
+      displayInvoiceInputDialog,
+      changeOtherLengthInvoiceValue,
+    } = this.props;
     const callback = value => {
-      this.props.changeLengthType(value);
-      this.props.clearLengthTypePicker();
+      changeLengthType(value);
+      clearLengthTypePicker();
       // if the value is the last index of the lengthTypeList,
       // it means user chose other length, we want to display the custom invoice length
       if (lengthTypeList[value] === 'other length') {
-        this.props.displayInvoiceInputDialog();
-        this.props.changeOtherLengthInvoiceValue('');
+        displayInvoiceInputDialog();
+        changeOtherLengthInvoiceValue('');
       }
     };
     this.preventDoubleTapHelper(callback, typeValue);
@@ -65,10 +71,16 @@ class ContainerScreen extends Component {
     this.preventDoubleTapHelper(this.props.displayLengthTypePicker);
   };
   onPressInvoiceInputConfirm = () => {
-    const toNumber = Number(this.props.otherLengthInvoice);
-    console.log(toNumber);
+    const {
+      otherLengthInvoice,
+      clearInvoiceInputDialog,
+      changeOtherLengthInvoiceValue,
+    } = this.props;
+    const toNumber = Number(otherLengthInvoice);
     if (toNumber !== 0 && !isNaN(toNumber)) {
-      this.props.clearInvoiceInputDialog();
+      clearInvoiceInputDialog();
+    } else {
+      changeOtherLengthInvoiceValue('');
     }
   };
   onNext = currentIndex => {
@@ -93,9 +105,10 @@ class ContainerScreen extends Component {
   }
   // render components
   renderErrorDialog() {
+    const {error} = this.props;
     return (
-      <Dialog.Container visible={this.props.error !== ''}>
-        <Dialog.Title>{this.props.error}</Dialog.Title>
+      <Dialog.Container visible={error !== ''}>
+        <Dialog.Title>{error}</Dialog.Title>
         <Dialog.Button label={LANGUAGE.OK} onPress={this.onClearErrorMessage} />
       </Dialog.Container>
     );
@@ -121,16 +134,20 @@ class ContainerScreen extends Component {
     );
   }
   renderInvoiceInputDialog() {
+    const {
+      showInvoiceInputDialog,
+      otherLengthInvoice,
+      changeOtherLengthInvoiceValue,
+    } = this.props;
     return (
-      <Dialog.Container visible={this.props.showInvoiceInputDialog}>
+      <Dialog.Container visible={showInvoiceInputDialog}>
         <Dialog.Input
           label={LANGUAGE.ENTER_INVOICE_INPUT_LABEL}
           autoFocus
           keyboardType="numeric"
           underlineColorAndroid="black"
-          onChangeText={text => {
-            this.props.changeOtherLengthInvoiceValue(text);
-          }}
+          value={otherLengthInvoice}
+          onChangeText={changeOtherLengthInvoiceValue}
         />
         <Dialog.Button
           label={LANGUAGE.OK}
@@ -146,7 +163,8 @@ class ContainerScreen extends Component {
           ...styles.flexOne,
           ...styles.flexRow,
           height: headerCellHeight * 1.5,
-          padding: 3,
+          padding: 2,
+          marginTop: 2,
         }}>
         <View style={styles.flexOne} />
         <TouchableOpacity onPress={this.onResetPress}>

@@ -107,7 +107,7 @@ class PCSListItem extends Component {
               style={{
                 ...styles.normalText,
                 ...styles.flexOne,
-                padding: 0,
+                ...styles.noPadding,
               }}
               onChangeText={text => this.onChangePCSInputValue(text)}
               value={String(this.props.pcs)}
