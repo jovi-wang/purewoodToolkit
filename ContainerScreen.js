@@ -1,30 +1,24 @@
 import React, {Component} from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-  Text,
-  View,
-  FlatList,
-  ScrollView,
-} from 'react-native';
+import {TouchableOpacity, Text, View, FlatList, ScrollView} from 'react-native';
 import {connect} from 'react-redux';
 import Dialog from 'react-native-dialog';
 
 import PCSListItem from './components/PCSListItem';
 import * as actions from './action';
 import {coefficientDisplayList, LANGUAGE, lengthTypeList} from './constant';
+import generateStyles, {
+  cellWidthLeft,
+  cellWidthMiddle,
+  cellWidthRight,
+  totalWidth,
+} from './styles';
 
-const totalWidth =
-  Math.min(Dimensions.get('window').width, Dimensions.get('window').height) - 4;
-const cellWidthLeft = Math.floor(totalWidth * 0.23);
-const cellWidthMiddle = Math.floor(totalWidth * 0.43);
-const cellWidthRight = Math.floor(totalWidth * 0.34);
-const cellHeight = 28;
-const borderWidthValue = 2;
 const fontSizeValue = 15;
+const headerCellHeight = 28;
+const PCSListItemHeight = 42;
 const preventTappingDelay = 300;
 const diameterOffset = 16;
+const styles = generateStyles(fontSizeValue);
 
 class ContainerScreen extends Component {
   constructor(props) {
@@ -149,21 +143,17 @@ class ContainerScreen extends Component {
     return (
       <View
         style={{
-          flex: 1,
-          flexDirection: 'row',
-          height: cellHeight * 1.5,
+          ...styles.flexOne,
+          ...styles.flexRow,
+          height: headerCellHeight * 1.5,
           padding: 3,
         }}>
-        <View style={{flex: 1}} />
+        <View style={styles.flexOne} />
         <TouchableOpacity onPress={this.onResetPress}>
           <Text
             style={{
               ...styles.normalText,
-              width: totalWidth / 2,
-              fontSize: styles.normalText.fontSize + 8,
-              borderWidth: 1,
-              borderColor: 'black',
-              borderRadius: 5,
+              ...styles.resetButtonStyle,
             }}>
             {LANGUAGE.RESET_ALL}
           </Text>
@@ -178,20 +168,39 @@ class ContainerScreen extends Component {
         ? lengthTypeList[lengthType]
         : `other length with invoice with invoice ${otherLengthInvoice}m`
       : LANGUAGE.LENGTH_PLACEHOLDER;
+    // styleSheet for TOTAL_PIECES and TOTAL_M3
+    const totalStyles = {
+      height: headerCellHeight,
+      ...styles.normalTextFontBold,
+      width: cellWidthLeft,
+      ...styles.borderRight,
+      ...styles.borderBottom,
+    };
+    // styleSheet for pieces and m3
+    const totalValueStyles = {
+      height: headerCellHeight,
+      ...styles.normalTextFontBold,
+      ...styles.borderBottom,
+      color: '#0064D2',
+    };
     return (
       <View
-        style={{paddingTop: 2, paddingHorizontal: 2, backgroundColor: 'white'}}>
+        style={{
+          paddingTop: 2,
+          paddingHorizontal: 2,
+          backgroundColor: '#FCFCFC',
+        }}>
         <View
           style={{
             width: totalWidth,
-            height: cellHeight,
-            flexDirection: 'row',
+            height: headerCellHeight,
+            ...styles.flexRow,
             ...styles.borderAll,
           }}>
           <Text
             style={{
               ...styles.normalText,
-              flex: 1,
+              ...styles.flexOne,
               width: cellWidthLeft,
             }}
             numberOfLines={1}
@@ -203,87 +212,50 @@ class ContainerScreen extends Component {
         <View
           style={{
             width: totalWidth,
-            height: cellHeight * 2,
-            flexDirection: 'row',
+            height: headerCellHeight * 2,
+            ...styles.flexRow,
             ...styles.borderHorizontal,
             ...styles.borderBottom,
             backgroundColor: '#fcea99',
           }}>
-          <View style={{flexDirection: 'column'}}>
-            <Text
-              style={{
-                height: cellHeight,
-                fontWeight: 'bold',
-                ...styles.normalText,
-                width: cellWidthLeft,
-                ...styles.borderRight,
-                ...styles.borderBottom,
-              }}>
-              {LANGUAGE.TOTAL_PIECES}
-            </Text>
-            <Text
-              style={{
-                height: cellHeight,
-                fontWeight: 'bold',
-                ...styles.normalText,
-                width: cellWidthLeft,
-                ...styles.borderRight,
-                ...styles.borderBottom,
-              }}>
-              {LANGUAGE.TOTAL_M3}
-            </Text>
+          <View style={styles.flexColum}>
+            <Text style={totalStyles}>{LANGUAGE.TOTAL_PIECES}</Text>
+            <Text style={totalStyles}>{LANGUAGE.TOTAL_M3}</Text>
           </View>
-          <View style={{flexDirection: 'column', flex: 1}}>
-            <Text
-              style={{
-                height: cellHeight,
-                ...styles.normalText,
-                ...styles.borderBottom,
-              }}>
-              {pieces}
-            </Text>
-            <Text
-              style={{
-                height: cellHeight,
-                ...styles.normalText,
-                ...styles.borderBottom,
-              }}>
-              {m3}
-            </Text>
+          <View style={{...styles.flexColum, ...styles.flexOne}}>
+            <Text style={totalValueStyles}>{pieces}</Text>
+            <Text style={totalValueStyles}>{m3}</Text>
           </View>
         </View>
         <View
           style={{
             width: totalWidth,
-            height: cellHeight,
-            flexDirection: 'row',
+            height: headerCellHeight,
+            ...styles.flexRow,
             ...styles.borderHorizontal,
             ...styles.borderBottom,
-            backgroundColor: '#a5f49c',
+            backgroundColor: '#b5f49c',
           }}>
           <Text
             style={{
-              ...styles.normalText,
+              ...styles.normalTextFontBold,
               width: cellWidthLeft,
               ...styles.borderRight,
-              fontWeight: 'bold',
             }}>
             {LANGUAGE.DIAMETER}
           </Text>
           <Text
             style={{
-              ...styles.normalText,
+              ...styles.normalTextFontBold,
               width: cellWidthMiddle,
               ...styles.borderRight,
-              fontWeight: 'bold',
             }}>
             {LANGUAGE.PCS}
           </Text>
           <Text
             style={{
-              ...styles.normalText,
+              ...styles.normalTextFontBold,
               width: cellWidthRight,
-              fontWeight: 'bold',
             }}>
             {LANGUAGE.COEFFICIENT}
           </Text>
@@ -310,8 +282,8 @@ class ContainerScreen extends Component {
         {this.renderLengthTypePickerDialog()}
         {this.renderInvoiceInputDialog()}
         {/*
-                    horizontal must be set to enable stickyHeaderIndices
-                 */}
+          horizontal must be set to enable stickyHeaderIndices
+        */}
         <ScrollView horizontal>
           <FlatList
             ListHeaderComponent={this.renderStickyHeader()}
@@ -322,38 +294,18 @@ class ContainerScreen extends Component {
             extraData={pcsList}
             renderItem={this.renderItem}
             initialNumToRender={25}
+            windowSize={15}
+            getItemLayout={(data, index) => ({
+              length: PCSListItemHeight,
+              offset: PCSListItemHeight * index,
+              index,
+            })}
           />
         </ScrollView>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  normalText: {
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    color: 'black',
-    fontSize: fontSizeValue,
-  },
-  borderAll: {
-    borderColor: 'black',
-    borderWidth: borderWidthValue,
-  },
-  borderRight: {
-    borderColor: 'black',
-    borderRightWidth: borderWidthValue,
-  },
-  borderBottom: {
-    borderColor: 'black',
-    borderBottomWidth: borderWidthValue,
-  },
-  borderHorizontal: {
-    borderColor: 'black',
-    borderRightWidth: borderWidthValue,
-    borderLeftWidth: borderWidthValue,
-  },
-});
 
 const mapStateToProps = state => {
   return {

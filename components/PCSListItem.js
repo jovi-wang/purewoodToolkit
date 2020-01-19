@@ -1,26 +1,20 @@
 import React, {Component} from 'react';
-import {
-  TextInput,
-  Text,
-  Dimensions,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-} from 'react-native';
+import {TextInput, Text, TouchableOpacity, View} from 'react-native';
 import {connect} from 'react-redux';
+
+import generateStyles, {
+  cellWidthLeft,
+  cellWidthMiddle,
+  cellWidthRight,
+  totalWidth,
+} from '../styles';
 
 import * as actions from '../action';
 import {pcsValueLimit, LANGUAGE} from '../constant';
 
-const totalWidth =
-  Math.min(Dimensions.get('window').width, Dimensions.get('window').height) - 4;
-const buttonWidth = Math.floor(totalWidth * 0.12);
-const cellWidthLeft = Math.floor(totalWidth * 0.23);
-const cellWidthMiddle = Math.floor(totalWidth * 0.43);
-const cellWidthRight = Math.floor(totalWidth * 0.34);
 const cellHeight = 42;
-const borderWidthValue = 2;
 const fontSizeValue = 22;
+const styles = generateStyles(fontSizeValue);
 
 class PCSListItem extends Component {
   onPressAdd = () => {
@@ -73,22 +67,21 @@ class PCSListItem extends Component {
   };
   render() {
     return (
-      <View style={{flexDirection: 'row', paddingHorizontal: 2}}>
+      <View style={{...styles.flexRow, paddingHorizontal: 2}}>
         <View
           style={{
             width: totalWidth,
             height: cellHeight,
-            flexDirection: 'row',
+            ...styles.flexRow,
             ...styles.borderHorizontal,
             ...styles.borderBottom,
           }}>
           <Text
             style={{
-              ...styles.normalText,
+              ...styles.normalTextFontBold,
               width: cellWidthLeft,
               ...styles.borderRight,
-              fontWeight: 'bold',
-              backgroundColor: '#a5f49c',
+              backgroundColor: '#D6D6D6',
             }}>
             {this.props.id}
           </Text>
@@ -96,19 +89,16 @@ class PCSListItem extends Component {
             style={{
               ...styles.borderRight,
               justifyContent: 'space-between',
-              flexDirection: 'row',
+              ...styles.flexRow,
               width: cellWidthMiddle,
             }}>
             <TouchableOpacity
-              style={{backgroundColor: '#f4fc8a'}}
+              style={{backgroundColor: '#7FC6F7'}}
               onPress={this.onPressMinus}>
               <Text
                 style={{
-                  ...styles.normalText,
-                  fontSize: 26,
-                  width: buttonWidth,
-                  fontWeight: 'bold',
-                  color: 'red',
+                  ...styles.normalTextFontBold,
+                  ...styles.buttonTextStyle,
                 }}>
                 {'−'}
               </Text>
@@ -116,7 +106,7 @@ class PCSListItem extends Component {
             <TextInput
               style={{
                 ...styles.normalText,
-                flex: 1,
+                ...styles.flexOne,
                 padding: 0,
               }}
               onChangeText={text => this.onChangePCSInputValue(text)}
@@ -128,15 +118,12 @@ class PCSListItem extends Component {
               onSubmitEditing={this.onNextPress}
             />
             <TouchableOpacity
-              style={{backgroundColor: '#f4fc8a'}}
+              style={{backgroundColor: '#7FC6F7'}}
               onPress={this.onPressAdd}>
               <Text
                 style={{
-                  ...styles.normalText,
-                  fontSize: 26,
-                  width: buttonWidth,
-                  fontWeight: 'bold',
-                  color: 'red',
+                  ...styles.normalTextFontBold,
+                  ...styles.buttonTextStyle,
                 }}>
                 {'+'}
               </Text>
@@ -166,32 +153,6 @@ const mapStateToProps = (state, ownProps) => {
     getRef: ownProps.getRef,
   };
 };
-
-const styles = StyleSheet.create({
-  normalText: {
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    color: 'black',
-    fontSize: fontSizeValue,
-  },
-  borderAll: {
-    borderColor: 'black',
-    borderWidth: borderWidthValue,
-  },
-  borderRight: {
-    borderColor: 'black',
-    borderRightWidth: borderWidthValue,
-  },
-  borderBottom: {
-    borderColor: 'black',
-    borderBottomWidth: borderWidthValue,
-  },
-  borderHorizontal: {
-    borderColor: 'black',
-    borderRightWidth: borderWidthValue,
-    borderLeftWidth: borderWidthValue,
-  },
-});
 
 export default connect(
   mapStateToProps,
