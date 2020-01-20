@@ -1,3 +1,3 @@
 #!/bin/bash
 cd android
-./gradlew assembleRelease
+./gradlew bundleRelease
