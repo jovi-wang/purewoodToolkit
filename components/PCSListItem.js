@@ -18,26 +18,40 @@ const styles = generateStyles(fontSizeValue);
 
 class PCSListItem extends Component {
   onPressAdd = () => {
-    const {lengthType, pcs, index} = this.props;
+    const {
+      lengthType,
+      otherLengthInvoice,
+      pcs,
+      index,
+      displayError,
+      changePCSValue,
+    } = this.props;
     // only dispatch when lengthType has been set properly
-    if (lengthType === 0) {
-      this.props.displayError(LANGUAGE.SELECT_LENGTH_FIRST);
+    if (lengthType === 0 && otherLengthInvoice === '') {
+      displayError(LANGUAGE.SELECT_LENGTH_FIRST);
       return;
     }
     // do not dispatch new actions if the pcs value is already max value
     if (pcs < pcsValueLimit.MAX) {
-      this.props.changePCSValue(index, 1);
+      changePCSValue(index, 1);
     }
   };
   onPressMinus = () => {
-    const {lengthType, pcs, index} = this.props;
-    if (lengthType === 0) {
-      this.props.displayError(LANGUAGE.SELECT_LENGTH_FIRST);
+    const {
+      lengthType,
+      otherLengthInvoice,
+      pcs,
+      index,
+      displayError,
+      changePCSValue,
+    } = this.props;
+    if (lengthType === 0 && otherLengthInvoice === '') {
+      displayError(LANGUAGE.SELECT_LENGTH_FIRST);
       return;
     }
     // do not dispatch new actions if the pcs value is already min value
     if (pcs > pcsValueLimit.MIN) {
-      this.props.changePCSValue(index, -1);
+      changePCSValue(index, -1);
     }
   };
   // change pcs value in textInput
@@ -47,15 +61,21 @@ class PCSListItem extends Component {
     if (Number.isNaN(temp)) {
       return;
     }
-
-    const {lengthType, pcs, index} = this.props;
-    if (lengthType === 0) {
-      this.props.displayError(LANGUAGE.SELECT_LENGTH_FIRST);
+    const {
+      lengthType,
+      otherLengthInvoice,
+      pcs,
+      index,
+      displayError,
+      changePCSValue,
+    } = this.props;
+    if (lengthType === 0 && otherLengthInvoice === '') {
+      displayError(LANGUAGE.SELECT_LENGTH_FIRST);
       return;
     }
     // only change PCS value if value is inside limit range
     if (temp >= pcsValueLimit.MIN && temp <= pcsValueLimit.MAX) {
-      this.props.changePCSValue(index, temp - pcs);
+      changePCSValue(index, temp - pcs);
     }
   };
   onNextPress = () => {
@@ -134,7 +154,9 @@ class PCSListItem extends Component {
               ...styles.normalText,
               width: cellWidthRight,
             }}>
-            {this.props.coefficient > 0 ? this.props.coefficient : ''}
+            {this.props.coefficient > 0
+              ? Math.round(this.props.coefficient * 10000) / 10000
+              : ''}
           </Text>
         </View>
       </View>
@@ -145,6 +167,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     error: state.common.error,
     lengthType: state.container.lengthType,
+    otherLengthInvoice: state.container.otherLengthInvoice,
     id: ownProps.value.id,
     coefficient: ownProps.value.coefficient,
     pcs: ownProps.value.pcs,

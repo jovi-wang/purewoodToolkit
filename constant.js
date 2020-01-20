@@ -1,4 +1,5 @@
 export const diameterLength = 45;
+export const diameterOffset = 16;
 export const pcsValueLimit = {MAX: 500, MIN: 0};
 export const coefficientList = [
   new Array(diameterLength).fill(0),
@@ -290,64 +291,16 @@ export const coefficientList = [
     4.007369128625,
     4.14212635,
   ],
-  // 'other length'
-  [
-    0.13395626192,
-    0.149432402105,
-    0.16584649018,
-    0.183198526145,
-    0.20148851,
-    0.220716441745,
-    0.24088232138,
-    0.261986148905,
-    0.28402792432,
-    0.307007647625,
-    0.33092531882,
-    0.355780937905,
-    0.38157450488,
-    0.408306019745,
-    0.4359754825,
-    0.464582893145,
-    0.49412825168,
-    0.524611558105,
-    0.55603281242,
-    0.588392014625,
-    0.62168916472,
-    0.655924262705,
-    0.69109730858,
-    0.727208302345,
-    0.764257244,
-    0.802244133545,
-    0.84116897098,
-    0.881031756305,
-    0.92183248952,
-    0.963571170625,
-    1.00624779962,
-    1.049862376505,
-    1.09441490128,
-    1.139905373945,
-    1.1863337945,
-    1.233700162945,
-    1.28200447928,
-    1.331246743505,
-    1.38142695562,
-    1.432545115625,
-    1.48460122352,
-    1.537595279305,
-    1.59152728298,
-    1.646397234545,
-    1.702205134,
-  ],
 ];
 
-export const coefficientDisplayList = coefficientList.map(array => [
-  ...array.map(i => Math.round(i * 10000) / 10000),
-]);
 export const LANGUAGE = {
   CONTAINER_NAME: 'Container Name',
   CONTAINER_NAME_PLACEHOLDER: 'Please enter container name',
   LENGTH: 'Length',
   LENGTH_PLACEHOLDER: 'Please select length...',
+  OTHER_LENGTH: 'other length',
+  OTHER_LENGTH_INVOICE: 'other length with invoice with invoice',
+  OTHER_LENGTH_INVOICE_VALUE_RANGE: 'invoice value is from 1 to 15',
   TOTAL_PIECES: 'Total PCS',
   TOTAL_M3: 'Total m3',
   DIAMETER: 'Diameter',
@@ -369,7 +322,6 @@ export const lengthTypeList = [
   '5.4m with invoice 5.3m',
   '5.9m with invoice 5.8m',
   '11.8m with invoice 11.5m',
-  'other length',
 ];
 // common action types
 export const COMMON = {
@@ -386,4 +338,5 @@ export const CONTAINER = {
   CHANGE_PCS: 'CHANGE_PCS',
   CHANGE_LENGTH_TYPE: 'CHANGE_LENGTH_TYPE',
   CHANGE_OTHER_LENGTH_INVOICE_VALUE: 'CHANGE_OTHER_LENGTH_INVOICE_VALUE',
+  CALCULATE_OTHER_LENGTH_COEFFICIENT: 'CALCULATE_OTHER_LENGTH_COEFFICIENT',
 };

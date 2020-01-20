@@ -19,6 +19,12 @@ export const changeOtherLengthInvoiceValue = text => {
     payload: text,
   };
 };
+export const calculateOtherLengthCoefficient = otherLengthInvoice => {
+  return {
+    type: CONTAINER.CALCULATE_OTHER_LENGTH_COEFFICIENT,
+    payload: otherLengthInvoice,
+  };
+};
 // Common action functions
 export const displayError = errorMessage => {
   return {

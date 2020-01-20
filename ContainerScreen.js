@@ -5,7 +5,12 @@ import Dialog from 'react-native-dialog';
 
 import PCSListItem from './components/PCSListItem';
 import * as actions from './action';
-import {coefficientDisplayList, LANGUAGE, lengthTypeList} from './constant';
+import {
+  coefficientList,
+  LANGUAGE,
+  lengthTypeList,
+  diameterOffset,
+} from './constant';
 import generateStyles, {
   cellWidthLeft,
   cellWidthMiddle,
@@ -17,7 +22,6 @@ const fontSizeValue = 15;
 const headerCellHeight = 28;
 const PCSListItemHeight = 42;
 const preventTappingDelay = 300;
-const diameterOffset = 16;
 const styles = generateStyles(fontSizeValue);
 
 class ContainerScreen extends Component {
@@ -34,12 +38,21 @@ class ContainerScreen extends Component {
   componentDidMount() {
     this.createDataSource(this.props);
   }
-  createDataSource({pcsList, lengthType}) {
+  createDataSource(props) {
+    const {
+      pcsList,
+      lengthType,
+      otherLengthInvoice,
+      otherLengthCoefficient,
+    } = props;
     this.dataSource = pcsList.map((element, index) => ({
       id: String(index + diameterOffset),
       index,
       pcs: element,
-      coefficient: coefficientDisplayList[lengthType][index],
+      coefficient:
+        otherLengthInvoice === ''
+          ? coefficientList[lengthType][index]
+          : otherLengthCoefficient[index],
     }));
   }
   onResetPress = () => {
@@ -49,23 +62,14 @@ class ContainerScreen extends Component {
     const {
       changeLengthType,
       clearLengthTypePicker,
-      displayInvoiceInputDialog,
       changeOtherLengthInvoiceValue,
     } = this.props;
     const callback = value => {
       changeLengthType(value);
       clearLengthTypePicker();
-      // if the value is the last index of the lengthTypeList,
-      // it means user chose other length, we want to display the custom invoice length
-      if (lengthTypeList[value] === 'other length') {
-        displayInvoiceInputDialog();
-        changeOtherLengthInvoiceValue('');
-      }
+      changeOtherLengthInvoiceValue('');
     };
     this.preventDoubleTapHelper(callback, typeValue);
-  };
-  onClearErrorMessage = () => {
-    this.props.clearError();
   };
   onPressLengthTypePicker = () => {
     this.preventDoubleTapHelper(this.props.displayLengthTypePicker);
@@ -75,12 +79,21 @@ class ContainerScreen extends Component {
       otherLengthInvoice,
       clearInvoiceInputDialog,
       changeOtherLengthInvoiceValue,
+      calculateOtherLengthCoefficient,
+      displayError,
     } = this.props;
     const toNumber = Number(otherLengthInvoice);
-    if (toNumber !== 0 && !isNaN(toNumber)) {
-      clearInvoiceInputDialog();
-    } else {
+    clearInvoiceInputDialog();
+    if (
+      isNaN(toNumber) ||
+      parseFloat(toNumber) < 1 ||
+      parseFloat(toNumber) > 15
+    ) {
+      displayError(LANGUAGE.OTHER_LENGTH_INVOICE_VALUE_RANGE);
       changeOtherLengthInvoiceValue('');
+    } else {
+      // calculate latest coefficient
+      calculateOtherLengthCoefficient(otherLengthInvoice);
     }
   };
   onNext = currentIndex => {
@@ -105,15 +118,22 @@ class ContainerScreen extends Component {
   }
   // render components
   renderErrorDialog() {
-    const {error} = this.props;
+    const {error, clearError} = this.props;
     return (
       <Dialog.Container visible={error !== ''}>
         <Dialog.Title>{error}</Dialog.Title>
-        <Dialog.Button label={LANGUAGE.OK} onPress={this.onClearErrorMessage} />
+        <Dialog.Button label={LANGUAGE.OK} onPress={clearError} />
       </Dialog.Container>
     );
   }
   renderLengthTypePickerDialog() {
+    const {
+      lengthType,
+      displayInvoiceInputDialog,
+      changeOtherLengthInvoiceValue,
+      clearLengthTypePicker,
+      changeLengthType,
+    } = this.props;
     const pickerItems = lengthTypeList.map((value, index) => {
       if (index > 0) {
         return (
@@ -127,14 +147,25 @@ class ContainerScreen extends Component {
       //use first element to render title
       return <Dialog.Title key={index}>{value}</Dialog.Title>;
     });
+    // add last description in the list for other length
     return (
       <Dialog.Container visible={this.props.showPicker}>
         {pickerItems}
+        <Dialog.Description
+          onPress={() => {
+            displayInvoiceInputDialog();
+            clearLengthTypePicker();
+            changeOtherLengthInvoiceValue('');
+            changeLengthType(lengthType);
+          }}>
+          {LANGUAGE.OTHER_LENGTH}
+        </Dialog.Description>
       </Dialog.Container>
     );
   }
   renderInvoiceInputDialog() {
     const {
+      // error,
       showInvoiceInputDialog,
       otherLengthInvoice,
       changeOtherLengthInvoiceValue,
@@ -181,11 +212,13 @@ class ContainerScreen extends Component {
   }
   renderStickyHeader() {
     const {pieces, m3, lengthType, otherLengthInvoice} = this.props;
-    const lengthTypeHeader = lengthType
-      ? lengthTypeList[lengthType] !== 'other length'
-        ? lengthTypeList[lengthType]
-        : `other length with invoice with invoice ${otherLengthInvoice}m`
-      : LANGUAGE.LENGTH_PLACEHOLDER;
+    let lengthTypeHeader;
+    if (otherLengthInvoice === '') {
+      lengthTypeHeader = lengthTypeList[lengthType];
+    } else {
+      lengthTypeHeader =
+        LANGUAGE.OTHER_LENGTH_INVOICE + ' ' + otherLengthInvoice + ' m';
+    }
     // styleSheet for TOTAL_PIECES and TOTAL_M3
     const totalStyles = {
       height: headerCellHeight,
@@ -336,6 +369,7 @@ const mapStateToProps = state => {
     pieces: state.container.pieces,
     m3: state.container.m3,
     otherLengthInvoice: state.container.otherLengthInvoice,
+    otherLengthCoefficient: state.container.otherLengthCoefficient,
   };
 };
 
