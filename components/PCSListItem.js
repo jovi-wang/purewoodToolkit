@@ -101,7 +101,7 @@ class PCSListItem extends Component {
               ...styles.normalTextFontBold,
               width: cellWidthLeft,
               ...styles.borderRight,
-              backgroundColor: '#D6D6D6',
+              backgroundColor: '#b0ebe2',
             }}>
             {this.props.id}
           </Text>
@@ -113,7 +113,7 @@ class PCSListItem extends Component {
               width: cellWidthMiddle,
             }}>
             <TouchableOpacity
-              style={{backgroundColor: '#7FC6F7'}}
+              style={{backgroundColor: '#707070'}}
               onPress={this.onPressMinus}>
               <Text
                 style={{
@@ -138,7 +138,7 @@ class PCSListItem extends Component {
               onSubmitEditing={this.onNextPress}
             />
             <TouchableOpacity
-              style={{backgroundColor: '#7FC6F7'}}
+              style={{backgroundColor: '#707070'}}
               onPress={this.onPressAdd}>
               <Text
                 style={{

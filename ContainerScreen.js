@@ -267,7 +267,7 @@ class ContainerScreen extends Component {
             ...styles.flexRow,
             ...styles.borderHorizontal,
             ...styles.borderBottom,
-            backgroundColor: '#fcea99',
+            backgroundColor: '#f4e2dc',
           }}>
           <View style={styles.flexColum}>
             <Text style={totalStyles}>{LANGUAGE.TOTAL_PIECES}</Text>
@@ -285,7 +285,7 @@ class ContainerScreen extends Component {
             ...styles.flexRow,
             ...styles.borderHorizontal,
             ...styles.borderBottom,
-            backgroundColor: '#b5f49c',
+            backgroundColor: '#8d93eb',
           }}>
           <Text
             style={{
