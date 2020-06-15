@@ -1,3 +1,6 @@
 #!/bin/bash
 cd android
-./gradlew bundleRelease
+# generate aab
+# ./gradlew bundleRelease
+# generate apk
+./gradlew assembleRelease
