@@ -299,7 +299,7 @@ export const LANGUAGE = {
   LENGTH: 'Length',
   LENGTH_PLACEHOLDER: 'Please select length...',
   OTHER_LENGTH: 'other length',
-  OTHER_LENGTH_INVOICE: 'other length with invoice with invoice',
+  OTHER_LENGTH_INVOICE: 'other length with invoice',
   OTHER_LENGTH_INVOICE_VALUE_RANGE: 'invoice value is from 1 to 15',
   TOTAL_PIECES: 'Total PCS',
   TOTAL_M3: 'Total m3',
