@@ -155,7 +155,7 @@ class PCSListItem extends Component {
               width: cellWidthRight,
             }}>
             {this.props.coefficient > 0
-              ? Math.round(this.props.coefficient * 10000) / 10000
+              ? this.props.coefficient.toFixed(4)
               : ''}
           </Text>
         </View>

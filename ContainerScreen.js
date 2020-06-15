@@ -147,19 +147,9 @@ class ContainerScreen extends Component {
       //use first element to render title
       return <Dialog.Title key={index}>{value}</Dialog.Title>;
     });
-    // add last description in the list for other length
     return (
       <Dialog.Container visible={this.props.showPicker}>
         {pickerItems}
-        <Dialog.Description
-          onPress={() => {
-            displayInvoiceInputDialog();
-            clearLengthTypePicker();
-            changeOtherLengthInvoiceValue('');
-            changeLengthType(lengthType);
-          }}>
-          {LANGUAGE.OTHER_LENGTH}
-        </Dialog.Description>
       </Dialog.Container>
     );
   }
@@ -232,7 +222,7 @@ class ContainerScreen extends Component {
       height: headerCellHeight,
       ...styles.normalTextFontBold,
       ...styles.borderBottom,
-      color: '#0064D2',
+      color: '#d20046',
     };
     return (
       <View
