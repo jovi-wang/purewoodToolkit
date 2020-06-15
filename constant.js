@@ -103,9 +103,9 @@ export const LANGUAGE = {
   CONTAINER_NAME: 'Container Name',
   CONTAINER_NAME_PLACEHOLDER: 'Please enter container name',
   LENGTH: 'Length',
-  LENGTH_PLACEHOLDER: '(PINE) Please select length',
+  LENGTH_PLACEHOLDER: 'Please select length',
   OTHER_LENGTH: 'other length',
-  OTHER_LENGTH_INVOICE: 'other length with invoice with invoice',
+  OTHER_LENGTH_INVOICE: 'other length with invoice',
   OTHER_LENGTH_INVOICE_VALUE_RANGE: 'invoice value is from 1 to 15',
   TOTAL_PIECES: 'Total PCS',
   TOTAL_M3: 'Total m3',
@@ -122,8 +122,8 @@ export const LANGUAGE = {
 };
 export const lengthTypeList = [
   LANGUAGE.LENGTH_PLACEHOLDER,
-  '(PINE) 2.9m with invoice 2.8m',
-  '(PINE) 5.9m with invoice 5.8m',
+  '2.9m with invoice 2.8m',
+  '5.9m with invoice 5.8m',
 ];
 // common action types
 export const COMMON = {

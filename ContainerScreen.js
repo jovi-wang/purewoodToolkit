@@ -204,10 +204,14 @@ class ContainerScreen extends Component {
     const {pieces, m3, lengthType, otherLengthInvoice} = this.props;
     let lengthTypeHeader;
     if (otherLengthInvoice === '') {
-      lengthTypeHeader = lengthTypeList[lengthType];
+      lengthTypeHeader = '(PINE) ' + lengthTypeList[lengthType];
     } else {
       lengthTypeHeader =
-        LANGUAGE.OTHER_LENGTH_INVOICE + ' ' + otherLengthInvoice + ' m';
+        '(PINE) ' +
+        LANGUAGE.OTHER_LENGTH_INVOICE +
+        ' ' +
+        otherLengthInvoice +
+        ' m';
     }
     // styleSheet for TOTAL_PIECES and TOTAL_M3
     const totalStyles = {
