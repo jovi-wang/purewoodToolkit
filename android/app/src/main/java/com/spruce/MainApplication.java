@@ -1,4 +1,4 @@
-package com.spruce;
+package com.pine;
 
 import android.app.Application;
 import android.content.Context;
