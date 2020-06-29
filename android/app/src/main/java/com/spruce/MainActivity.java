@@ -1,4 +1,4 @@
-package com.pine;
+package com.german1108;
 
 import com.facebook.react.ReactActivity;
 
@@ -10,6 +10,6 @@ public class MainActivity extends ReactActivity {
     */
     @Override
     protected String getMainComponentName() {
-        return "PINE";
+        return "german1108";
     }
 }

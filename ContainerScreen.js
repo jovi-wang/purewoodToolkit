@@ -204,14 +204,10 @@ class ContainerScreen extends Component {
     const {pieces, m3, lengthType, otherLengthInvoice} = this.props;
     let lengthTypeHeader;
     if (otherLengthInvoice === '') {
-      lengthTypeHeader = '(PINE) ' + lengthTypeList[lengthType];
+      lengthTypeHeader = lengthTypeList[lengthType];
     } else {
       lengthTypeHeader =
-        '(PINE) ' +
-        LANGUAGE.OTHER_LENGTH_INVOICE +
-        ' ' +
-        otherLengthInvoice +
-        ' m';
+        LANGUAGE.OTHER_LENGTH_INVOICE + ' ' + otherLengthInvoice + ' m';
     }
     // styleSheet for TOTAL_PIECES and TOTAL_M3
     const totalStyles = {
@@ -250,7 +246,8 @@ class ContainerScreen extends Component {
             }}
             numberOfLines={1}
             ellipsizeMode="tail"
-            onPress={this.onPressLengthTypePicker}>
+            // onPress={this.onPressLengthTypePicker}
+          >
             {lengthTypeHeader}
           </Text>
         </View>
@@ -261,7 +258,7 @@ class ContainerScreen extends Component {
             ...styles.flexRow,
             ...styles.borderHorizontal,
             ...styles.borderBottom,
-            backgroundColor: '#f4e2dc',
+            backgroundColor: '#f7e5d7',
           }}>
           <View style={styles.flexColum}>
             <Text style={totalStyles}>{LANGUAGE.TOTAL_PIECES}</Text>
@@ -279,7 +276,7 @@ class ContainerScreen extends Component {
             ...styles.flexRow,
             ...styles.borderHorizontal,
             ...styles.borderBottom,
-            backgroundColor: '#8d93eb',
+            backgroundColor: '#c4dbfb',
           }}>
           <Text
             style={{

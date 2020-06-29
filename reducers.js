@@ -10,7 +10,7 @@ const commonInitialState = {
 };
 
 const containerInitialState = {
-  lengthType: 0,
+  lengthType: 1,
   pieces: 0,
   m3: 0,
   otherLengthInvoice: '',
