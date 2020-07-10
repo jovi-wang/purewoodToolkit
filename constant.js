@@ -1,5 +1,5 @@
 export const diameterLength = 25;
-export const diameterOffset = 23;
+export const diameterOffset = 20;
 export const pcsValueLimit = {MAX: 500, MIN: 0};
 export const coefficientList = [
   new Array(diameterLength).fill(0),
