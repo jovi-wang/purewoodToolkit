@@ -1,10 +1,8 @@
 import {COMMON, CONTAINER, diameterLength} from './constant';
-import {getTotalValue, calculateOtherLengthCoefficient} from './helper';
+import {getTotalValue} from './helper';
 import {coefficientList} from './constant';
 
 const commonInitialState = {
-  // loading: false,
-  showInvoiceInputDialog: false,
   error: '',
   showPicker: false,
 };
@@ -13,9 +11,7 @@ const containerInitialState = {
   lengthType: 0,
   pieces: 0,
   m3: 0,
-  otherLengthInvoice: '',
   pcsList: new Array(diameterLength).fill(0),
-  otherLengthCoefficient: new Array(diameterLength).fill(0),
 };
 
 export const commonReducer = (state = commonInitialState, action) => {
@@ -39,16 +35,6 @@ export const commonReducer = (state = commonInitialState, action) => {
         ...state,
         error: '',
       };
-    case DISPLAY_INVOICE_INPUT_DIALOG:
-      return {
-        ...state,
-        showInvoiceInputDialog: true,
-      };
-    case CLEAR_INVOICE_INPUT_DIALOG:
-      return {
-        ...state,
-        showInvoiceInputDialog: false,
-      };
     case DISPLAY_PICKER_DIALOG:
       return {
         ...state,
@@ -69,12 +55,7 @@ export const commonReducer = (state = commonInitialState, action) => {
 };
 
 export const containerReducer = (state = containerInitialState, action) => {
-  const {
-    CHANGE_PCS,
-    CHANGE_LENGTH_TYPE,
-    CHANGE_OTHER_LENGTH_INVOICE_VALUE,
-    CALCULATE_OTHER_LENGTH_COEFFICIENT,
-  } = CONTAINER;
+  const {CHANGE_PCS, CHANGE_LENGTH_TYPE} = CONTAINER;
   const {RESET_ALL} = COMMON;
   let temp;
   let total;
@@ -92,10 +73,7 @@ export const containerReducer = (state = containerInitialState, action) => {
       // before call getTotalValue helper, decide which coefficientList to use based on if initial value is changed
       // use calculated coefficient if state.lengthType===0
       // use constant coefficient if state.lengthType!==0
-      currentCoefficient =
-        state.otherLengthInvoice === ''
-          ? coefficientList[state.lengthType]
-          : state.otherLengthCoefficient;
+      currentCoefficient = coefficientList[state.lengthType];
 
       total = getTotalValue(temp, currentCoefficient);
       return {
@@ -111,21 +89,6 @@ export const containerReducer = (state = containerInitialState, action) => {
         ...state,
         m3: Math.round(total.m3 * 100) / 100,
         lengthType: action.payload,
-      };
-    case CALCULATE_OTHER_LENGTH_COEFFICIENT:
-      currentCoefficient = calculateOtherLengthCoefficient(
-        10 * parseFloat(action.payload),
-      );
-      total = getTotalValue(state.pcsList, currentCoefficient);
-      return {
-        ...state,
-        otherLengthCoefficient: currentCoefficient,
-        m3: Math.round(total.m3 * 100) / 100,
-      };
-    case CHANGE_OTHER_LENGTH_INVOICE_VALUE:
-      return {
-        ...state,
-        otherLengthInvoice: action.payload,
       };
     case RESET_ALL:
       return {

@@ -13,18 +13,6 @@ export const changeLengthType = type => {
     payload: type,
   };
 };
-export const changeOtherLengthInvoiceValue = text => {
-  return {
-    type: CONTAINER.CHANGE_OTHER_LENGTH_INVOICE_VALUE,
-    payload: text,
-  };
-};
-export const calculateOtherLengthCoefficient = otherLengthInvoice => {
-  return {
-    type: CONTAINER.CALCULATE_OTHER_LENGTH_COEFFICIENT,
-    payload: otherLengthInvoice,
-  };
-};
 // Common action functions
 export const displayError = errorMessage => {
   return {
@@ -45,16 +33,6 @@ export const displayLengthTypePicker = () => {
 export const clearLengthTypePicker = () => {
   return {
     type: COMMON.CLEAR_PICKER_DIALOG,
-  };
-};
-export const displayInvoiceInputDialog = () => {
-  return {
-    type: COMMON.DISPLAY_INVOICE_INPUT_DIALOG,
-  };
-};
-export const clearInvoiceInputDialog = () => {
-  return {
-    type: COMMON.CLEAR_INVOICE_INPUT_DIALOG,
   };
 };
 export const resetAll = () => {

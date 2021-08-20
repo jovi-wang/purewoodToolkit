@@ -18,16 +18,9 @@ const styles = generateStyles(fontSizeValue);
 
 class PCSListItem extends Component {
   onPressAdd = () => {
-    const {
-      lengthType,
-      otherLengthInvoice,
-      pcs,
-      index,
-      displayError,
-      changePCSValue,
-    } = this.props;
+    const {lengthType, pcs, index, displayError, changePCSValue} = this.props;
     // only dispatch when lengthType has been set properly
-    if (lengthType === 0 && otherLengthInvoice === '') {
+    if (lengthType === 0) {
       displayError(LANGUAGE.SELECT_LENGTH_FIRST);
       return;
     }
@@ -37,15 +30,8 @@ class PCSListItem extends Component {
     }
   };
   onPressMinus = () => {
-    const {
-      lengthType,
-      otherLengthInvoice,
-      pcs,
-      index,
-      displayError,
-      changePCSValue,
-    } = this.props;
-    if (lengthType === 0 && otherLengthInvoice === '') {
+    const {lengthType, pcs, index, displayError, changePCSValue} = this.props;
+    if (lengthType === 0) {
       displayError(LANGUAGE.SELECT_LENGTH_FIRST);
       return;
     }
@@ -61,15 +47,8 @@ class PCSListItem extends Component {
     if (Number.isNaN(temp)) {
       return;
     }
-    const {
-      lengthType,
-      otherLengthInvoice,
-      pcs,
-      index,
-      displayError,
-      changePCSValue,
-    } = this.props;
-    if (lengthType === 0 && otherLengthInvoice === '') {
+    const {lengthType, pcs, index, displayError, changePCSValue} = this.props;
+    if (lengthType === 0) {
       displayError(LANGUAGE.SELECT_LENGTH_FIRST);
       return;
     }
@@ -167,7 +146,6 @@ const mapStateToProps = (state, ownProps) => {
   return {
     error: state.common.error,
     lengthType: state.container.lengthType,
-    otherLengthInvoice: state.container.otherLengthInvoice,
     id: ownProps.value.id,
     coefficient: ownProps.value.coefficient,
     pcs: ownProps.value.pcs,

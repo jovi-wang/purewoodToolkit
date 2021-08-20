@@ -1,5 +1,5 @@
-export const diameterLength = 44;
-export const diameterOffset = 17;
+export const diameterLength = 43;
+export const diameterOffset = 18;
 export const pcsValueLimit = {MAX: 500, MIN: 0};
 export const coefficientList = [
   new Array(diameterLength).fill(0),
@@ -104,9 +104,6 @@ export const LANGUAGE = {
   CONTAINER_NAME_PLACEHOLDER: 'Please enter container name',
   LENGTH: 'Length',
   LENGTH_PLACEHOLDER: 'Please select length',
-  OTHER_LENGTH: 'other length',
-  OTHER_LENGTH_INVOICE: 'other length with invoice',
-  OTHER_LENGTH_INVOICE_VALUE_RANGE: 'invoice value is from 1 to 15',
   TOTAL_PIECES: 'Total PCS',
   TOTAL_M3: 'Total m3',
   DIAMETER: 'Diameter',
@@ -114,7 +111,6 @@ export const LANGUAGE = {
   COEFFICIENT: 'm3/PCS',
   RESET_ALL: 'Reset All',
   OK: 'OK',
-  ENTER_INVOICE_INPUT_LABEL: 'Please enter invoice value',
   ENTER_CONTAINER_NAME_FIRST: 'Please enter container name first',
   SELECT_LENGTH_FIRST: 'Please select length first',
   INTERNAL_ERROR:
@@ -122,8 +118,9 @@ export const LANGUAGE = {
 };
 export const lengthTypeList = [
   LANGUAGE.LENGTH_PLACEHOLDER,
-  '2.9m with invoice 2.8m',
-  '5.9m with invoice 5.8m',
+  '11.8m SPRUCE',
+  '5.9m SPRUCE',
+  // '5.9m PINE',
 ];
 // common action types
 export const COMMON = {
@@ -139,6 +136,4 @@ export const COMMON = {
 export const CONTAINER = {
   CHANGE_PCS: 'CHANGE_PCS',
   CHANGE_LENGTH_TYPE: 'CHANGE_LENGTH_TYPE',
-  CHANGE_OTHER_LENGTH_INVOICE_VALUE: 'CHANGE_OTHER_LENGTH_INVOICE_VALUE',
-  CALCULATE_OTHER_LENGTH_COEFFICIENT: 'CALCULATE_OTHER_LENGTH_COEFFICIENT',
 };

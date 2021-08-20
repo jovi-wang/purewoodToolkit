@@ -39,62 +39,27 @@ class ContainerScreen extends Component {
     this.createDataSource(this.props);
   }
   createDataSource(props) {
-    const {
-      pcsList,
-      lengthType,
-      otherLengthInvoice,
-      otherLengthCoefficient,
-    } = props;
+    const {pcsList, lengthType} = props;
     this.dataSource = pcsList.map((element, index) => ({
       id: String(index + diameterOffset),
       index,
       pcs: element,
-      coefficient:
-        otherLengthInvoice === ''
-          ? coefficientList[lengthType][index]
-          : otherLengthCoefficient[index],
+      coefficient: coefficientList[lengthType][index],
     }));
   }
   onResetPress = () => {
     this.preventDoubleTapHelper(this.props.resetAll);
   };
   onChangeLengthType = typeValue => {
-    const {
-      changeLengthType,
-      clearLengthTypePicker,
-      changeOtherLengthInvoiceValue,
-    } = this.props;
+    const {changeLengthType, clearLengthTypePicker} = this.props;
     const callback = value => {
       changeLengthType(value);
       clearLengthTypePicker();
-      changeOtherLengthInvoiceValue('');
     };
     this.preventDoubleTapHelper(callback, typeValue);
   };
   onPressLengthTypePicker = () => {
     this.preventDoubleTapHelper(this.props.displayLengthTypePicker);
-  };
-  onPressInvoiceInputConfirm = () => {
-    const {
-      otherLengthInvoice,
-      clearInvoiceInputDialog,
-      changeOtherLengthInvoiceValue,
-      calculateOtherLengthCoefficient,
-      displayError,
-    } = this.props;
-    const toNumber = Number(otherLengthInvoice);
-    clearInvoiceInputDialog();
-    if (
-      isNaN(toNumber) ||
-      parseFloat(toNumber) < 1 ||
-      parseFloat(toNumber) > 15
-    ) {
-      displayError(LANGUAGE.OTHER_LENGTH_INVOICE_VALUE_RANGE);
-      changeOtherLengthInvoiceValue('');
-    } else {
-      // calculate latest coefficient
-      calculateOtherLengthCoefficient(otherLengthInvoice);
-    }
   };
   onNext = currentIndex => {
     const nextIndex = Number(currentIndex) + 1;
@@ -127,13 +92,6 @@ class ContainerScreen extends Component {
     );
   }
   renderLengthTypePickerDialog() {
-    const {
-      lengthType,
-      displayInvoiceInputDialog,
-      changeOtherLengthInvoiceValue,
-      clearLengthTypePicker,
-      changeLengthType,
-    } = this.props;
     const pickerItems = lengthTypeList.map((value, index) => {
       if (index > 0) {
         return (
@@ -150,30 +108,6 @@ class ContainerScreen extends Component {
     return (
       <Dialog.Container visible={this.props.showPicker}>
         {pickerItems}
-      </Dialog.Container>
-    );
-  }
-  renderInvoiceInputDialog() {
-    const {
-      // error,
-      showInvoiceInputDialog,
-      otherLengthInvoice,
-      changeOtherLengthInvoiceValue,
-    } = this.props;
-    return (
-      <Dialog.Container visible={showInvoiceInputDialog}>
-        <Dialog.Input
-          label={LANGUAGE.ENTER_INVOICE_INPUT_LABEL}
-          autoFocus
-          keyboardType="numeric"
-          underlineColorAndroid="black"
-          value={otherLengthInvoice}
-          onChangeText={changeOtherLengthInvoiceValue}
-        />
-        <Dialog.Button
-          label={LANGUAGE.OK}
-          onPress={this.onPressInvoiceInputConfirm}
-        />
       </Dialog.Container>
     );
   }
@@ -201,18 +135,8 @@ class ContainerScreen extends Component {
     );
   }
   renderStickyHeader() {
-    const {pieces, m3, lengthType, otherLengthInvoice} = this.props;
-    let lengthTypeHeader;
-    if (otherLengthInvoice === '') {
-      lengthTypeHeader = '(PINE) ' + lengthTypeList[lengthType];
-    } else {
-      lengthTypeHeader =
-        '(PINE) ' +
-        LANGUAGE.OTHER_LENGTH_INVOICE +
-        ' ' +
-        otherLengthInvoice +
-        ' m';
-    }
+    const {pieces, m3, lengthType} = this.props;
+    let lengthTypeHeader = lengthTypeList[lengthType];
     // styleSheet for TOTAL_PIECES and TOTAL_M3
     const totalStyles = {
       height: headerCellHeight,
@@ -325,7 +249,6 @@ class ContainerScreen extends Component {
       <View>
         {this.renderErrorDialog()}
         {this.renderLengthTypePickerDialog()}
-        {this.renderInvoiceInputDialog()}
         {/*
           horizontal must be set to enable stickyHeaderIndices
         */}
@@ -355,15 +278,11 @@ class ContainerScreen extends Component {
 const mapStateToProps = state => {
   return {
     error: state.common.error,
-    // loading: state.common.loading,
     showPicker: state.common.showPicker,
-    showInvoiceInputDialog: state.common.showInvoiceInputDialog,
     pcsList: state.container.pcsList,
     lengthType: state.container.lengthType,
     pieces: state.container.pieces,
     m3: state.container.m3,
-    otherLengthInvoice: state.container.otherLengthInvoice,
-    otherLengthCoefficient: state.container.otherLengthCoefficient,
   };
 };
 
