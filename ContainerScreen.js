@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, Text, View, FlatList, ScrollView} from 'react-native';
+import {TouchableOpacity, Text, View, FlatList} from 'react-native';
 import {connect} from 'react-redux';
 import Dialog from 'react-native-dialog';
 
@@ -11,18 +11,7 @@ import {
   lengthTypeList,
   diameterOffset,
 } from './constant';
-import generateStyles, {
-  cellWidthLeft,
-  cellWidthMiddle,
-  cellWidthRight,
-  totalWidth,
-} from './styles';
-
-const fontSizeValue = 15;
-const headerCellHeight = 28;
-const PCSListItemHeight = 42;
-const preventTappingDelay = 300;
-const styles = generateStyles(fontSizeValue);
+import {mainStyles as styles} from './styles';
 
 class ContainerScreen extends Component {
   constructor(props) {
@@ -83,7 +72,7 @@ class ContainerScreen extends Component {
     callback(props);
     setTimeout(() => {
       this.disableDoubleClick = false;
-    }, preventTappingDelay);
+    }, 300);
   }
   // render components
   renderErrorDialog() {
@@ -117,23 +106,9 @@ class ContainerScreen extends Component {
   }
   renderFooterButton() {
     return (
-      <View
-        style={{
-          ...styles.flexOne,
-          ...styles.flexRow,
-          height: headerCellHeight * 1.5,
-          padding: 2,
-          marginTop: 2,
-        }}>
-        <View style={styles.flexOne} />
+      <View style={styles.resetContainer}>
         <TouchableOpacity onPress={this.onResetPress}>
-          <Text
-            style={{
-              ...styles.normalText,
-              ...styles.resetButtonStyle,
-            }}>
-            {LANGUAGE.RESET_ALL}
-          </Text>
+          <Text style={styles.reset}>{LANGUAGE.RESET_ALL}</Text>
         </TouchableOpacity>
       </View>
     );
@@ -141,97 +116,27 @@ class ContainerScreen extends Component {
   renderStickyHeader() {
     const {pieces, m3, lengthType} = this.props;
     let lengthTypeHeader = lengthTypeList[lengthType];
-    // styleSheet for TOTAL_PIECES and TOTAL_M3
-    const totalStyles = {
-      height: headerCellHeight,
-      ...styles.normalTextFontBold,
-      width: cellWidthLeft,
-      ...styles.borderRight,
-      ...styles.borderBottom,
-    };
-    // styleSheet for pieces and m3
-    const totalValueStyles = {
-      height: headerCellHeight,
-      ...styles.normalTextFontBold,
-      ...styles.borderBottom,
-      color: '#d20046',
-    };
     return (
-      <View
-        style={{
-          paddingTop: 2,
-          paddingHorizontal: 2,
-          backgroundColor: '#FCFCFC',
-        }}>
-        <View
-          style={{
-            width: totalWidth,
-            height: headerCellHeight,
-            ...styles.flexRow,
-            ...styles.borderAll,
-          }}>
-          <Text
-            style={{
-              ...styles.normalText,
-              ...styles.flexOne,
-              width: cellWidthLeft,
-            }}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-            onPress={this.onPressLengthTypePicker}>
-            {lengthTypeHeader}
-          </Text>
+      <View style={styles.container}>
+        <Text
+          style={styles.lengthType}
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          onPress={this.onPressLengthTypePicker}>
+          {lengthTypeHeader}
+        </Text>
+        <View style={styles.totalPcsContainer}>
+          <Text style={styles.totalLeftText}>{LANGUAGE.TOTAL_PIECES}</Text>
+          <Text style={styles.totalRightText}>{pieces}</Text>
         </View>
-        <View
-          style={{
-            width: totalWidth,
-            height: headerCellHeight * 2,
-            ...styles.flexRow,
-            ...styles.borderHorizontal,
-            ...styles.borderBottom,
-            backgroundColor: '#f0e68c',
-          }}>
-          <View style={styles.flexColum}>
-            <Text style={totalStyles}>{LANGUAGE.TOTAL_PIECES}</Text>
-            <Text style={totalStyles}>{LANGUAGE.TOTAL_M3}</Text>
-          </View>
-          <View style={{...styles.flexColum, ...styles.flexOne}}>
-            <Text style={totalValueStyles}>{pieces}</Text>
-            <Text style={totalValueStyles}>{m3}</Text>
-          </View>
+        <View style={styles.totalPcsContainer}>
+          <Text style={styles.totalLeftText}>{LANGUAGE.TOTAL_M3}</Text>
+          <Text style={styles.totalRightText}>{m3}</Text>
         </View>
-        <View
-          style={{
-            width: totalWidth,
-            height: headerCellHeight,
-            ...styles.flexRow,
-            ...styles.borderHorizontal,
-            ...styles.borderBottom,
-            backgroundColor: '#00ced1',
-          }}>
-          <Text
-            style={{
-              ...styles.normalTextFontBold,
-              width: cellWidthLeft,
-              ...styles.borderRight,
-            }}>
-            {LANGUAGE.DIAMETER}
-          </Text>
-          <Text
-            style={{
-              ...styles.normalTextFontBold,
-              width: cellWidthMiddle,
-              ...styles.borderRight,
-            }}>
-            {LANGUAGE.PCS}
-          </Text>
-          <Text
-            style={{
-              ...styles.normalTextFontBold,
-              width: cellWidthRight,
-            }}>
-            {LANGUAGE.COEFFICIENT}
-          </Text>
+        <View style={styles.headerContainer}>
+          <Text style={styles.diameterHeader}>{LANGUAGE.DIAMETER}</Text>
+          <Text style={styles.pcsHeader}>{LANGUAGE.PCS}</Text>
+          <Text style={styles.coefficientHeader}>{LANGUAGE.COEFFICIENT}</Text>
         </View>
       </View>
     );
@@ -246,31 +151,28 @@ class ContainerScreen extends Component {
     />
   );
   render() {
-    // scrollView keyboardShouldPersistTaps set to handler
     const {pcsList} = this.props;
     this.createDataSource(this.props);
     return (
       <View>
         {this.renderErrorDialog()}
         {this.renderLengthTypePickerDialog()}
-        <ScrollView horizontal>
-          <FlatList
-            ListHeaderComponent={this.renderStickyHeader()}
-            ListFooterComponent={this.renderFooterButton()}
-            stickyHeaderIndices={[0]}
-            data={this.dataSource}
-            keyExtractor={item => item.id}
-            extraData={pcsList}
-            renderItem={this.renderItem}
-            initialNumToRender={25}
-            windowSize={15}
-            getItemLayout={(data, index) => ({
-              length: PCSListItemHeight,
-              offset: PCSListItemHeight * index,
-              index,
-            })}
-          />
-        </ScrollView>
+        <FlatList
+          ListHeaderComponent={this.renderStickyHeader()}
+          ListFooterComponent={this.renderFooterButton()}
+          stickyHeaderIndices={[0]}
+          data={this.dataSource}
+          keyExtractor={item => item.id}
+          extraData={pcsList}
+          renderItem={this.renderItem}
+          initialNumToRender={25}
+          windowSize={15}
+          getItemLayout={(_, index) => ({
+            length: 42,
+            offset: 42 * index,
+            index,
+          })}
+        />
       </View>
     );
   }

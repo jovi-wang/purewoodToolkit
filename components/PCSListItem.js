@@ -2,19 +2,9 @@ import React, {Component} from 'react';
 import {TextInput, Text, TouchableOpacity, View} from 'react-native';
 import {connect} from 'react-redux';
 
-import generateStyles, {
-  cellWidthLeft,
-  cellWidthMiddle,
-  cellWidthRight,
-  totalWidth,
-} from '../styles';
-
+import {listItemStyles as styles} from '../styles';
 import * as actions from '../action';
 import {pcsValueLimit, LANGUAGE} from '../constant';
-
-const cellHeight = 42;
-const fontSizeValue = 22;
-const styles = generateStyles(fontSizeValue);
 
 class PCSListItem extends Component {
   onPressAdd = () => {
@@ -66,82 +56,38 @@ class PCSListItem extends Component {
   };
   render() {
     return (
-      <View style={{...styles.flexRow, paddingHorizontal: 2}}>
-        <View
-          style={{
-            width: totalWidth,
-            height: cellHeight,
-            ...styles.flexRow,
-            ...styles.borderHorizontal,
-            ...styles.borderBottom,
-          }}>
-          <Text
-            style={{
-              ...styles.normalTextFontBold,
-              width: cellWidthLeft,
-              ...styles.borderRight,
-              backgroundColor: '#e9967a',
-            }}>
-            {this.props.id}
-          </Text>
-          <View
-            style={{
-              ...styles.borderRight,
-              justifyContent: 'space-between',
-              ...styles.flexRow,
-              width: cellWidthMiddle,
-            }}>
-            <TouchableOpacity
-              style={{backgroundColor: '#fff8dc'}}
-              onPress={this.onPressMinus}>
-              <Text
-                style={{
-                  ...styles.normalTextFontBold,
-                  ...styles.buttonTextStyle,
-                }}>
-                {'−'}
-              </Text>
-            </TouchableOpacity>
-            <TextInput
-              style={{
-                ...styles.normalText,
-                ...styles.flexOne,
-                ...styles.noPadding,
-              }}
-              onChangeText={text => this.onChangePCSInputValue(text)}
-              value={String(this.props.pcs)}
-              ref={ref => this.props.getRef(ref, this.props.id)}
-              returnKeyType="next"
-              keyboardType="numeric"
-              blurOnSubmit={false}
-              onSubmitEditing={this.onNextPress}
-            />
-            <TouchableOpacity
-              style={{backgroundColor: '#fff8dc'}}
-              onPress={this.onPressAdd}>
-              <Text
-                style={{
-                  ...styles.normalTextFontBold,
-                  ...styles.buttonTextStyle,
-                }}>
-                {'+'}
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <Text
-            style={{
-              ...styles.normalText,
-              width: cellWidthRight,
-            }}>
-            {this.props.coefficient > 0
-              ? this.props.coefficient.toFixed(3)
-              : ''}
-          </Text>
+      <View style={styles.container}>
+        <Text style={styles.diameter}>{this.props.id}</Text>
+        <View style={styles.pcs}>
+          <TouchableOpacity
+            style={styles.signBackgroundColor}
+            onPress={this.onPressMinus}>
+            <Text style={styles.signText}>{'−'}</Text>
+          </TouchableOpacity>
+          <TextInput
+            style={styles.input}
+            onChangeText={text => this.onChangePCSInputValue(text)}
+            value={String(this.props.pcs)}
+            ref={ref => this.props.getRef(ref, this.props.id)}
+            returnKeyType="next"
+            keyboardType="numeric"
+            blurOnSubmit={false}
+            onSubmitEditing={this.onNextPress}
+          />
+          <TouchableOpacity
+            style={styles.signBackgroundColor}
+            onPress={this.onPressAdd}>
+            <Text style={styles.signText}>{'+'}</Text>
+          </TouchableOpacity>
         </View>
+        <Text style={styles.coefficient}>
+          {this.props.coefficient > 0 ? this.props.coefficient.toFixed(3) : ''}
+        </Text>
       </View>
     );
   }
 }
+
 const mapStateToProps = (state, ownProps) => {
   return {
     error: state.common.error,
