@@ -59,7 +59,7 @@ export default fontSizeValue => {
       fontSize: 26,
       width: buttonWidth,
       fontWeight: 'bold',
-      color: '#ffffff',
+      color: '#000000',
     },
     // in containerScreen only
     resetButtonStyle: {

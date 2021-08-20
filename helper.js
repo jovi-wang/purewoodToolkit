@@ -1,8 +1,8 @@
 // generate new pieces and m3 value
 export const getTotalValue = (pcsList, coefficientList) => {
   const reducer = (accumulator, currentValue, index) => ({
-    pieces: accumulator.pieces + currentValue,
-    m3: accumulator.m3 + currentValue * coefficientList[index],
+    pieces: accumulator.pieces + pcsList[index],
+    m3: accumulator.m3 + currentValue * pcsList[index],
   });
-  return pcsList.reduce(reducer, {pieces: 0, m3: 0});
+  return coefficientList.reduce(reducer, {pieces: 0, m3: 0});
 };

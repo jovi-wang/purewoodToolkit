@@ -80,7 +80,7 @@ class PCSListItem extends Component {
               ...styles.normalTextFontBold,
               width: cellWidthLeft,
               ...styles.borderRight,
-              backgroundColor: '#b0ebe2',
+              backgroundColor: '#e9967a',
             }}>
             {this.props.id}
           </Text>
@@ -92,7 +92,7 @@ class PCSListItem extends Component {
               width: cellWidthMiddle,
             }}>
             <TouchableOpacity
-              style={{backgroundColor: '#707070'}}
+              style={{backgroundColor: '#fff8dc'}}
               onPress={this.onPressMinus}>
               <Text
                 style={{
@@ -117,7 +117,7 @@ class PCSListItem extends Component {
               onSubmitEditing={this.onNextPress}
             />
             <TouchableOpacity
-              style={{backgroundColor: '#707070'}}
+              style={{backgroundColor: '#fff8dc'}}
               onPress={this.onPressAdd}>
               <Text
                 style={{
@@ -134,7 +134,7 @@ class PCSListItem extends Component {
               width: cellWidthRight,
             }}>
             {this.props.coefficient > 0
-              ? this.props.coefficient.toFixed(4)
+              ? this.props.coefficient.toFixed(3)
               : ''}
           </Text>
         </View>

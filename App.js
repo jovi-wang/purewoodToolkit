@@ -12,7 +12,7 @@ const reducers = combineReducers({
   container: containerReducer,
 });
 let store;
-if (__DEV__ === true) {
+if (__DEV__) {
   store = createStore(reducers, {}, applyMiddleware(thunk, logger));
 } else {
   store = createStore(reducers, {}, applyMiddleware(thunk));

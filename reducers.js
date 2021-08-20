@@ -21,8 +21,6 @@ export const commonReducer = (state = commonInitialState, action) => {
     DISPLAY_PICKER_DIALOG,
     CLEAR_PICKER_DIALOG,
     RESET_ALL,
-    DISPLAY_INVOICE_INPUT_DIALOG,
-    CLEAR_INVOICE_INPUT_DIALOG,
   } = COMMON;
   switch (action.type) {
     case DISPLAY_ERROR:
@@ -70,9 +68,6 @@ export const containerReducer = (state = containerInitialState, action) => {
         }
         return item;
       });
-      // before call getTotalValue helper, decide which coefficientList to use based on if initial value is changed
-      // use calculated coefficient if state.lengthType===0
-      // use constant coefficient if state.lengthType!==0
       currentCoefficient = coefficientList[state.lengthType];
 
       total = getTotalValue(temp, currentCoefficient);
@@ -87,6 +82,7 @@ export const containerReducer = (state = containerInitialState, action) => {
       total = getTotalValue(state.pcsList, currentCoefficient);
       return {
         ...state,
+        pieces: total.pieces,
         m3: Math.round(total.m3 * 100) / 100,
         lengthType: action.payload,
       };

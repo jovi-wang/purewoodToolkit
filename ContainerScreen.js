@@ -40,12 +40,16 @@ class ContainerScreen extends Component {
   }
   createDataSource(props) {
     const {pcsList, lengthType} = props;
-    this.dataSource = pcsList.map((element, index) => ({
-      id: String(index + diameterOffset),
-      index,
-      pcs: element,
-      coefficient: coefficientList[lengthType][index],
-    }));
+    // in some cases, pcsList length is larger than coefficientList length
+    // after map to PCSListItem format, filter items with undefined coefficient
+    this.dataSource = pcsList
+      .map((element, index) => ({
+        id: String(index + diameterOffset),
+        index,
+        pcs: element,
+        coefficient: coefficientList[lengthType][index],
+      }))
+      .filter(i => !isNaN(Number(i.coefficient)));
   }
   onResetPress = () => {
     this.preventDoubleTapHelper(this.props.resetAll);
@@ -185,7 +189,7 @@ class ContainerScreen extends Component {
             ...styles.flexRow,
             ...styles.borderHorizontal,
             ...styles.borderBottom,
-            backgroundColor: '#f4e2dc',
+            backgroundColor: '#f0e68c',
           }}>
           <View style={styles.flexColum}>
             <Text style={totalStyles}>{LANGUAGE.TOTAL_PIECES}</Text>
@@ -203,7 +207,7 @@ class ContainerScreen extends Component {
             ...styles.flexRow,
             ...styles.borderHorizontal,
             ...styles.borderBottom,
-            backgroundColor: '#8d93eb',
+            backgroundColor: '#00ced1',
           }}>
           <Text
             style={{
@@ -249,9 +253,6 @@ class ContainerScreen extends Component {
       <View>
         {this.renderErrorDialog()}
         {this.renderLengthTypePickerDialog()}
-        {/*
-          horizontal must be set to enable stickyHeaderIndices
-        */}
         <ScrollView horizontal>
           <FlatList
             ListHeaderComponent={this.renderStickyHeader()}
