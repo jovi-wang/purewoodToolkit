@@ -1,4 +1,4 @@
-package com.pine;
+package com.polish;
 
 import android.app.Application;
 import android.content.Context;
