@@ -49,9 +49,9 @@ class PCSListItem extends Component {
   };
   onNextPress = () => {
     /*
-        to achieve a feature that when press 'enter',
-        move to next textInput and do not dismiss keyboard
-        */
+    to achieve a feature that when press 'enter',
+    move to next textInput and do not dismiss keyboard
+    */
     this.props.onNext(this.props.id);
   };
   render() {
