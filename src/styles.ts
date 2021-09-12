@@ -1,25 +1,18 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import {StyleSheet, TextStyle} from 'react-native';
 
-const totalWidth =
-  Math.min(Dimensions.get('window').width, Dimensions.get('window').height) - 6;
-const buttonWidth = Math.floor(totalWidth * 0.12);
-
-const cellWidthLeft = Math.floor(totalWidth * 0.23);
-const cellWidthMiddle = Math.floor(totalWidth * 0.43);
-const cellWidthRight = Math.floor(totalWidth * 0.34);
-
-const normalText = {
+const normalText: TextStyle = {
   textAlign: 'center',
   textAlignVertical: 'center',
   color: 'black',
 };
-const normalTextBold = {
+const normalTextBold: TextStyle = {
   ...normalText,
   fontWeight: 'bold',
 };
 
-export const mainStyles = StyleSheet.create({
+export const mainScreenStyles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingTop: 2,
     paddingHorizontal: 2,
     backgroundColor: 'white',
@@ -31,45 +24,42 @@ export const mainStyles = StyleSheet.create({
   },
   totalLeftText: {
     fontSize: 15,
-    width: cellWidthLeft,
+    flex: 23,
     ...normalTextBold,
+    borderRightWidth: 1,
   },
   totalRightText: {
     fontSize: 16,
-    flex: 1,
+    flex: 77,
     ...normalTextBold,
-    color: 'red',
-    borderLeftWidth: 1,
+    color: 'cornflowerblue',
   },
   headerContainer: {
     flexDirection: 'row',
     borderWidth: 1,
-    borderTopWidth: 0,
+    backgroundColor: 'lightgreen',
   },
   diameterHeader: {
     ...normalTextBold,
     fontSize: 15,
-    width: cellWidthLeft,
-    padding: 2,
-    backgroundColor: 'royalblue',
+    flex: 23,
+    borderRightWidth: 1,
   },
   pcsHeader: {
     ...normalTextBold,
     fontSize: 15,
-    width: cellWidthMiddle,
-    padding: 2,
-    backgroundColor: 'dodgerblue',
+    flex: 43,
+    borderRightWidth: 1,
   },
   coefficientHeader: {
     ...normalTextBold,
     fontSize: 15,
-    width: cellWidthRight,
-    padding: 2,
-    backgroundColor: 'deepskyblue',
+    flex: 34,
   },
   lengthType: {
     ...normalText,
     fontSize: 18,
+    paddingVertical: 4,
   },
   resetContainer: {
     flexDirection: 'row',
@@ -78,7 +68,7 @@ export const mainStyles = StyleSheet.create({
   },
   reset: {
     ...normalText,
-    width: totalWidth / 3,
+    paddingHorizontal: 16,
     fontSize: 24,
     borderWidth: 2,
     borderColor: 'orangered',
@@ -91,37 +81,38 @@ export const listItemStyles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     height: 42,
-    marginHorizontal: 2,
     borderColor: 'black',
     borderWidth: 1,
   },
   diameter: {
-    width: cellWidthLeft,
-    fontSize: 22,
+    flex: 23,
+    fontSize: 23,
     ...normalTextBold,
-    backgroundColor: 'darksalmon',
+    backgroundColor: 'gainsboro',
   },
   pcs: {
     flexDirection: 'row',
-    width: cellWidthMiddle,
+    flex: 43,
     justifyContent: 'space-between',
   },
-  signBackgroundColor: {backgroundColor: 'cornsilk'},
+  signBackgroundColor: {backgroundColor: 'lightskyblue'},
   signText: {
-    width: buttonWidth,
+    // color: 'white',
+    paddingHorizontal: 8,
     fontSize: 26,
     ...normalTextBold,
   },
   input: {
+    textAlignVertical: 'center',
     textAlign: 'center',
     color: 'black',
+    flex: 1,
     fontSize: 22,
     padding: 0,
   },
   coefficient: {
-    width: cellWidthRight,
+    flex: 34,
     fontSize: 22,
     ...normalText,
-    backgroundColor: 'lightcyan',
   },
 });
