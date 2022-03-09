@@ -61,10 +61,10 @@ const ListItem: React.FC<IPros> = ({
         </TouchableOpacity>
         <TextInput
           style={styles.input}
-          onChangeText={(value) => onChangePCSInput(value)}
+          onChangeText={value => onChangePCSInput(value)}
           value={String(pcsValue)}
           keyboardType="numeric"
-          ref={(ref) => getRef(ref, id)}
+          ref={ref => getRef(ref, id)}
           returnKeyType="next"
           blurOnSubmit={false}
           onSubmitEditing={() => onNext(id)}

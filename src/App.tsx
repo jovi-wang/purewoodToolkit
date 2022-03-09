@@ -44,7 +44,7 @@ const App = () => {
   );
   const [listData, setListData] = useState<IItem[]>([]);
   const changePieces = (index: number, value: number) => {
-    setPcsList((prevState) => {
+    setPcsList(prevState => {
       // plus 1 or minus 1 to the indexed value and change pcsList
       const temp = prevState.map((item, itemIndex) => {
         if (itemIndex === index) {

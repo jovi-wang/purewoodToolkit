@@ -20,7 +20,7 @@ export const mainScreenStyles = StyleSheet.create({
   totalPcsContainer: {
     flexDirection: 'row',
     borderWidth: 1,
-    backgroundColor: 'khaki',
+    backgroundColor: 'lavenderblush',
   },
   totalLeftText: {
     fontSize: 15,
@@ -32,12 +32,12 @@ export const mainScreenStyles = StyleSheet.create({
     fontSize: 16,
     flex: 77,
     ...normalTextBold,
-    color: 'cornflowerblue',
+    color: 'darkviolet',
   },
   headerContainer: {
     flexDirection: 'row',
     borderWidth: 1,
-    backgroundColor: 'lightgreen',
+    backgroundColor: 'burlywood',
   },
   diameterHeader: {
     ...normalTextBold,
@@ -88,14 +88,14 @@ export const listItemStyles = StyleSheet.create({
     flex: 23,
     fontSize: 23,
     ...normalTextBold,
-    backgroundColor: 'gainsboro',
+    backgroundColor: 'lemonchiffon',
   },
   pcs: {
     flexDirection: 'row',
     flex: 43,
     justifyContent: 'space-between',
   },
-  signBackgroundColor: {backgroundColor: 'lightskyblue'},
+  signBackgroundColor: {backgroundColor: 'darkseagreen'},
   signText: {
     // color: 'white',
     paddingHorizontal: 8,

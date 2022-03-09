@@ -14,7 +14,7 @@ const Header: React.FC<IProps> = ({totalPieces, totalM3, type, showPicker}) => {
     <>
       <TouchableOpacity onPress={() => showPicker()}>
         <Text style={styles.lengthType} numberOfLines={1} ellipsizeMode="tail">
-          {`(SPRUCE) ${typeList[type]}`}
+          {typeList[type]}
         </Text>
       </TouchableOpacity>
       <View style={styles.totalPcsContainer}>
