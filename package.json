@@ -1,10 +1,10 @@
 {
-  "name": "Estonia-VORU",
+  "name": "estonia",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "start": "react-native start",
+    "android:release": "react-native run-android --variant=release",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
