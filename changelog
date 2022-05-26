@@ -21,6 +21,8 @@ MYAPP_RELEASE_STORE_PASSWORD=8Z.Ea(vG=/B8gJt~
 MYAPP_RELEASE_KEY_PASSWORD=8Z.Ea(vG=/B8gJt~
 
 2022-05-26
-- redo RN setup
-- brew upgrade
-- update android sdk path
+- merge estonia branch into master branch, rename all estonia back to purewoodtoolkit
+- redo RN setup, including brew upgrade and update android sdk path
+- check upgrade helper and plan to update rn from 0.67.3 to 0.68.2
+- fresh create RNHW (npx react-native init RNHW0682 --version 0.68.2 --template react-native-template-typescript)
+- update based on upgrade helper and new RNHW0682 project
