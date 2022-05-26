@@ -20,7 +20,7 @@ export const mainScreenStyles = StyleSheet.create({
   totalPcsContainer: {
     flexDirection: 'row',
     borderWidth: 1,
-    backgroundColor: 'lavenderblush',
+    backgroundColor: 'khaki',
   },
   totalLeftText: {
     fontSize: 15,
@@ -32,29 +32,31 @@ export const mainScreenStyles = StyleSheet.create({
     fontSize: 16,
     flex: 77,
     ...normalTextBold,
-    color: 'darkviolet',
+    color: 'red',
   },
   headerContainer: {
     flexDirection: 'row',
     borderWidth: 1,
-    backgroundColor: 'burlywood',
   },
   diameterHeader: {
     ...normalTextBold,
     fontSize: 15,
     flex: 23,
     borderRightWidth: 1,
+    backgroundColor: 'royalblue',
   },
   pcsHeader: {
     ...normalTextBold,
     fontSize: 15,
     flex: 43,
     borderRightWidth: 1,
+    backgroundColor: 'dodgerblue',
   },
   coefficientHeader: {
     ...normalTextBold,
     fontSize: 15,
     flex: 34,
+    backgroundColor: 'deepskyblue',
   },
   lengthType: {
     ...normalText,
@@ -88,14 +90,14 @@ export const listItemStyles = StyleSheet.create({
     flex: 23,
     fontSize: 23,
     ...normalTextBold,
-    backgroundColor: 'lemonchiffon',
+    backgroundColor: 'darksalmon',
   },
   pcs: {
     flexDirection: 'row',
     flex: 43,
     justifyContent: 'space-between',
   },
-  signBackgroundColor: {backgroundColor: 'darkseagreen'},
+  signBackgroundColor: {backgroundColor: 'cornsilk'},
   signText: {
     // color: 'white',
     paddingHorizontal: 8,
@@ -114,5 +116,6 @@ export const listItemStyles = StyleSheet.create({
     flex: 34,
     fontSize: 22,
     ...normalText,
+    backgroundColor: 'lightcyan',
   },
 });
