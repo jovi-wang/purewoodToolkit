@@ -1,0 +1,21 @@
+2022-03-09
+
+- update rn from 0.65.1 to 0.67.3
+- redo the setup for Android in RN getting started page (update java and android sdk)
+- create a fresh RNHW using typescript template, remove ios folder, remove **test** folder, gemfile and gemfile.lock, .ruby-version
+- prepare to replace the original files by RNHW
+  - key update should from android folder, rename rnhw (both uppercase and lowercase) -> estonia, com.rnhw to com.estonia
+  - search and find all rnhw replace with estonia
+  - update app icons
+- copy the following files/folders into the fresh created project
+  - android-build.sh
+  - src folder into
+  - change.log (see if need to update anything)
+- update ts files in src to align with eslint
+- update key data and text, fix other issues
+
+preserve the last 4 rows from android/gradle.properties
+MYAPP_RELEASE_STORE_FILE=purewoodToolkit-key.keystore
+MYAPP_RELEASE_KEY_ALIAS=purewoodToolkit-key-alias
+MYAPP_RELEASE_STORE_PASSWORD=8Z.Ea(vG=/B8gJt~
+MYAPP_RELEASE_KEY_PASSWORD=8Z.Ea(vG=/B8gJt~
