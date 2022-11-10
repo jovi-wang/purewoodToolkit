@@ -28,3 +28,24 @@ MYAPP_RELEASE_KEY_PASSWORD=8Z.Ea(vG=/B8gJt~
 - fresh create RNHW (npx react-native init RNHW0682 --version 0.68.2 --template react-native-template-typescript)
 - update based on upgrade helper and new RNHW0682 project, make it working in debug and release
 - pull master branch into poland branch
+
+2022-11-11
+
+- re-setup env by install JDK again, now java version is openjdk 11.0.17
+
+  ```bash
+     brew tap homebrew/cask-versions
+     brew install --cask zulu11
+  ```
+
+- update node version to node 19
+
+  ```bash
+    brew install node
+    brew install watchman
+  ```
+
+- android studio android sdk did not update the Intel x86 Atom_64 System Image and Google APIs Intel x86 Atom System Image is still with SDK Platform 30 and 29
+- no change in .zprofile
+- fresh create RNHW (npx react-native init RNHW070 --version 0.70.5 --template react-native-template-typescript)
+- update based on upgrade helper and new RNHW070 project, make it working in debug and release
