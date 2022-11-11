@@ -60,7 +60,7 @@ const App = () => {
     let sum_pieces = 0;
     const data: IItem[] = [];
     pcsList.forEach((value, index) => {
-      // generate flatlist data
+      // generate flatList data
       data.push({
         id: index,
         pcsValue: value,
@@ -130,6 +130,7 @@ const App = () => {
         type={type}
         showPicker={() => setShowPicker(true)}
       />
+      {/* there is an error when first time loading the app, complaining about VirtualizedLists should never be nested inside plain ScrollViews>. However if remove scrollView, the final few rows will stop the keyboard pop up*/}
       <ScrollView keyboardShouldPersistTaps="always">
         <FlatList
           ListFooterComponent={<ResetButton />}

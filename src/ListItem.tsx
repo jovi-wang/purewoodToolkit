@@ -36,7 +36,6 @@ const ListItem: React.FC<IPros> = ({
     }
   };
   const onChangePCSInput = (text: string) => {
-    console.log(text);
     if (type === 0) {
       return;
     }
